@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { writeClient } from "../sanity/lib/writeClient";
 import { client } from "../sanity/lib/client";
 import { slugify, textToPortableText } from "../lib/sanity-helpers";
+import { runActivePlugins } from "../lib/pluginRunner";
 
 export interface BlogPostItem {
   _id: string;
@@ -166,6 +167,19 @@ export async function createBlogPostAction(formData: FormData) {
     const created = await writeClient.create(doc);
     revalidatePath("/dashboard/blogs");
     revalidatePath("/dashboard");
+
+    // Fire active plugin webhooks/APIs
+    const triggerEvent = status === "published" ? "blog.published" : "blog.updated";
+    runActivePlugins(triggerEvent, {
+      id: created._id,
+      title,
+      slugEn,
+      slugPl,
+      status,
+      author,
+      publishedAt,
+    }).catch(() => {});
+
     return { success: true, id: created._id };
   } catch (error: any) {
     console.error("Create blog post error:", error);
@@ -242,6 +256,19 @@ export async function updateBlogPostAction(id: string, formData: FormData) {
     revalidatePath("/dashboard/blogs");
     revalidatePath(`/dashboard/blogs/${id}/edit`);
     revalidatePath("/dashboard");
+
+    // Fire active plugin webhooks/APIs
+    const triggerEvent = status === "published" ? "blog.published" : "blog.updated";
+    runActivePlugins(triggerEvent, {
+      id,
+      title,
+      slugEn,
+      slugPl,
+      status,
+      author,
+      publishedAt,
+    }).catch(() => {});
+
     return { success: true };
   } catch (error: any) {
     console.error("Update blog post error:", error);
@@ -255,6 +282,14 @@ export async function toggleBlogPostStatus(id: string, currentStatus: "published
     await writeClient.patch(id).set({ status: nextStatus }).commit();
     revalidatePath("/dashboard/blogs");
     revalidatePath("/dashboard");
+
+    if (nextStatus === "published") {
+      runActivePlugins("blog.published", {
+        id,
+        status: "published",
+      }).catch(() => {});
+    }
+
     return { success: true, status: nextStatus };
   } catch (error: any) {
     console.error("Toggle status error:", error);

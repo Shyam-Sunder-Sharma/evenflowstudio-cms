@@ -187,6 +187,44 @@ Returns active configurations for enabled plugins (SEO suffixes, GA4 Measurement
 }
 ```
 
+#### `GET /api/public/plugins`
+Returns all active plugins grouped by type (`scripts`, `connectors`, `webhooks`) so external PHP/WordPress sites can automatically load dynamic tracking tags, embed snippets, or third-party connections without needing code deployments.
+
+- **Response Body**:
+```json
+{
+  "status": "success",
+  "scripts": [
+    {
+      "id": "doc_id",
+      "name": "Google Analytics & Tag Injector",
+      "slug": "google-analytics",
+      "category": "Analytics",
+      "script": "<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-EVENFLOW01\"></script>",
+      "triggerEvents": ["frontend.load"]
+    }
+  ],
+  "connectors": [],
+  "webhooks": [
+    {
+      "id": "doc_id_webhook",
+      "name": "Production Revalidation Hook",
+      "slug": "prod-revalidate",
+      "category": "Webhook",
+      "endpoint": "https://evenflowstudio.com/api/revalidate-hook",
+      "triggerEvents": ["blog.published", "portfolio.published"]
+    }
+  ],
+  "meta": {
+    "totalActive": 3,
+    "scriptCount": 1,
+    "connectorCount": 0,
+    "webhookCount": 1,
+    "generatedAt": "2026-11-18T11:35:00.000Z"
+  }
+}
+```
+
 #### `GET /api/public/sitemap.xml`
 Dynamically renders a standard search engine XML sitemap containing all published bilingual blog posts (`/blog/{slugEn}`, `/pl/blog/{slugPl}`) and portfolio entries (`/portfolio/{slugEn}`, `/pl/portfolio/{slugPl}`). Automatically active whenever the **SEO & Meta Manager** plugin is enabled in `/dashboard/plugins`.
 
@@ -227,7 +265,38 @@ if (!empty($settings['analytics']['enabled']) && !empty($settings['analytics']['
 ?>
 ```
 
-### 3.2 Fetching Blogs in PHP (`cURL`)
+### 3.2 Dynamic Script & Embed Tag Injection in PHP
+This approach fetches all active frontend plugins dynamically, meaning any script, tag, or analytics snippet added in `/dashboard/plugins` will render on the PHP site automatically:
+
+```php
+<?php
+function injectEvenflowDynamicPlugins() {
+    $apiUrl = "http://localhost:3000/api/public/plugins";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    if ($response) {
+        $data = json_decode($response, true);
+        $scripts = $data['scripts'] ?? [];
+        foreach ($scripts as $plugin) {
+            if (!empty($plugin['script'])) {
+                echo "\n<!-- [Plugin: " . htmlspecialchars($plugin['name']) . "] -->\n";
+                echo $plugin['script'] . "\n";
+            }
+        }
+    }
+}
+
+// Call in PHP header or footer:
+injectEvenflowDynamicPlugins();
+?>
+```
+
+### 3.3 Fetching Blogs in PHP (`cURL`)
 
 ```php
 <?php

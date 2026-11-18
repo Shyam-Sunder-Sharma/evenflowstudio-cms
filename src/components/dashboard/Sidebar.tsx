@@ -125,6 +125,17 @@ export function Sidebar() {
           <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300" />
         </Link>
         <Link
+          href="/api/public/plugins"
+          target="_blank"
+          className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 transition group"
+        >
+          <div className="flex items-center gap-3">
+            <Blocks className="w-4 h-4 text-indigo-400" />
+            <span>Public Plugins API</span>
+          </div>
+          <ExternalLink className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300" />
+        </Link>
+        <Link
           href="/api/public/settings"
           target="_blank"
           className="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-slate-100 hover:bg-slate-900/60 transition group"

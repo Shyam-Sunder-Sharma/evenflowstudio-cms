@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { writeClient } from "../sanity/lib/writeClient";
 import { client } from "../sanity/lib/client";
 import { slugify, textToPortableText } from "../lib/sanity-helpers";
+import { runActivePlugins } from "../lib/pluginRunner";
 
 export interface PortfolioProjectItem {
   _id: string;
@@ -199,6 +200,21 @@ export async function createPortfolioProjectAction(formData: FormData) {
     const created = await writeClient.create(doc);
     revalidatePath("/dashboard/portfolio");
     revalidatePath("/dashboard");
+
+    // Fire active plugin webhooks/APIs
+    const triggerEvent = status === "published" ? "portfolio.published" : "portfolio.updated";
+    runActivePlugins(triggerEvent, {
+      id: created._id,
+      title,
+      slugPl,
+      slugEn,
+      status,
+      author,
+      publishedAt,
+      client: clientName,
+      projectUrl,
+    }).catch(() => {});
+
     return { success: true, id: created._id };
   } catch (error: any) {
     console.error("Create portfolio project error:", error);
@@ -301,6 +317,21 @@ export async function updatePortfolioProjectAction(id: string, formData: FormDat
     revalidatePath("/dashboard/portfolio");
     revalidatePath(`/dashboard/portfolio/${id}/edit`);
     revalidatePath("/dashboard");
+
+    // Fire active plugin webhooks/APIs
+    const triggerEvent = status === "published" ? "portfolio.published" : "portfolio.updated";
+    runActivePlugins(triggerEvent, {
+      id,
+      title,
+      slugPl,
+      slugEn,
+      status,
+      author,
+      publishedAt,
+      client: clientName,
+      projectUrl,
+    }).catch(() => {});
+
     return { success: true };
   } catch (error: any) {
     console.error("Update portfolio project error:", error);
@@ -314,6 +345,14 @@ export async function togglePortfolioProjectStatus(id: string, currentStatus: "p
     await writeClient.patch(id).set({ status: nextStatus }).commit();
     revalidatePath("/dashboard/portfolio");
     revalidatePath("/dashboard");
+
+    if (nextStatus === "published") {
+      runActivePlugins("portfolio.published", {
+        id,
+        status: "published",
+      }).catch(() => {});
+    }
+
     return { success: true, status: nextStatus };
   } catch (error: any) {
     console.error("Toggle status error:", error);

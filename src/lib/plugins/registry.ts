@@ -1,9 +1,18 @@
 export type PluginCategory =
   | "SEO"
-  | "Media"
   | "Analytics"
+  | "Webhook"
+  | "Script / Embed"
+  | "Media"
+  | "Custom Integration"
   | "Workflow"
   | "Developer";
+
+export type PluginType =
+  | "webhook"
+  | "script_inject"
+  | "api_connector"
+  | "studio_tool";
 
 export interface PluginSettingField {
   key: string;
@@ -18,10 +27,13 @@ export interface PluginDefinition {
   key: string;
   name: string;
   category: PluginCategory;
+  pluginType: PluginType;
   description: string;
   defaultEnabled: boolean;
   iconName: string;
   externalLink?: string;
+  endpointOrScript?: string;
+  triggerEvents?: string[];
   defaultSettings: Record<string, string>;
   fields: PluginSettingField[];
 }
@@ -31,10 +43,12 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
     key: "seo-manager",
     name: "SEO & Meta Manager",
     category: "SEO",
+    pluginType: "api_connector",
     description:
       "Manages global metadata title suffixes, OpenGraph defaults, and automatically exposes a dynamic XML sitemap endpoint at /api/public/sitemap.xml.",
     defaultEnabled: true,
     iconName: "Search",
+    endpointOrScript: "/api/public/sitemap.xml",
     defaultSettings: {
       metaTitleSuffix: " | Evenflowstudio",
       defaultOgImage: "https://evenflowstudio.com/og-default.jpg",
@@ -71,11 +85,13 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
     key: "media-library",
     name: "Sanity Media Library",
     category: "Media",
+    pluginType: "studio_tool",
     description:
       "Connects to the centralized /studio Media asset browser plugin (sanity-plugin-media) for tagging, categorizing, and batch managing images.",
     defaultEnabled: true,
     iconName: "Image",
     externalLink: "/studio",
+    endpointOrScript: "/studio",
     defaultSettings: {
       libraryTitle: "Evenflowstudio Central Media Hub",
     },
@@ -94,20 +110,23 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
     key: "google-analytics",
     name: "Google Analytics & Tag Injector",
     category: "Analytics",
+    pluginType: "script_inject",
     description:
-      "Configures Google Analytics Measurement ID (GA4) and exposes it via /api/public/settings so the external PHP/WordPress frontend can render tracking tags.",
+      "Configures Google Analytics Measurement ID (GA4) and exposes it via /api/public/settings and /api/public/plugins so the external PHP/WordPress frontend can render tracking tags.",
     defaultEnabled: false,
     iconName: "BarChart3",
+    triggerEvents: ["frontend.load"],
+    endpointOrScript: "<!-- Google tag (gtag.js) -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-EVENFLOW01\"></script>",
     defaultSettings: {
       gaMeasurementId: "G-EVENFLOW01",
     },
     fields: [
       {
         key: "gaMeasurementId",
-        label: "GA4 Measurement ID",
+        label: "Google Analytics 4 Measurement ID",
         type: "text",
         placeholder: "G-XXXXXXXXXX",
-        helperText: "Your Google Analytics 4 Measurement ID, beginning with 'G-'.",
+        helperText: "Starts with 'G-'. Injected into frontend templates.",
         defaultValue: "G-EVENFLOW01",
       },
     ],
@@ -115,11 +134,19 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
   {
     key: "webhook-sync",
     name: "Webhook & Auto-Sync Trigger",
-    category: "Workflow",
+    category: "Webhook",
+    pluginType: "webhook",
     description:
-      "Enables an automated webhook dispatch target that informs external PHP servers or staging environments whenever editorial content is created, published, or updated.",
+      "Automatically fires an HTTP POST payload to an external URL whenever blog articles or portfolio projects are created, published, or updated.",
     defaultEnabled: false,
     iconName: "Webhook",
+    triggerEvents: [
+      "blog.published",
+      "blog.updated",
+      "portfolio.published",
+      "portfolio.updated",
+    ],
+    endpointOrScript: "https://evenflowstudio.com/api/revalidate-hook",
     defaultSettings: {
       webhookUrl: "https://evenflowstudio.com/api/revalidate-hook",
       secretToken: "whsec_evenflow_sample_token",
@@ -127,18 +154,18 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
     fields: [
       {
         key: "webhookUrl",
-        label: "Webhook Target URL",
+        label: "Destination Webhook URL",
         type: "url",
-        placeholder: "https://evenflowstudio.com/api/revalidate-hook",
-        helperText: "Endpoint that will receive JSON payloads on content mutations.",
+        placeholder: "https://your-domain.com/api/revalidate",
+        helperText: "Endpoint receiving automatic POST JSON notifications.",
         defaultValue: "https://evenflowstudio.com/api/revalidate-hook",
       },
       {
         key: "secretToken",
-        label: "Webhook Secret Token",
+        label: "Webhook Signing Secret",
         type: "text",
         placeholder: "whsec_...",
-        helperText: "Shared secret passed in the X-Evenflow-Signature header.",
+        helperText: "Transmitted via Authorization: Bearer header for verification.",
         defaultValue: "whsec_evenflow_sample_token",
       },
     ],
@@ -146,22 +173,24 @@ export const AVAILABLE_PLUGINS: PluginDefinition[] = [
   {
     key: "groq-vision",
     name: "GROQ API Playground",
-    category: "Developer",
+    category: "Custom Integration",
+    pluginType: "studio_tool",
     description:
-      "Enables the embedded Vision tool plugin within /studio/vision, providing real-time execution of GROQ queries against the live dataset with execution timing.",
+      "Direct link to the embedded @sanity/vision query testing console inside /studio/vision to inspect live Content Lake schemas and test GROQ projections.",
     defaultEnabled: true,
     iconName: "Code",
     externalLink: "/studio/vision",
+    endpointOrScript: "/studio/vision",
     defaultSettings: {
       defaultApiVersion: "2024-01-01",
     },
     fields: [
       {
         key: "defaultApiVersion",
-        label: "API Version",
+        label: "Target API Version",
         type: "text",
         placeholder: "2024-01-01",
-        helperText: "Sanity API version date format (YYYY-MM-DD).",
+        helperText: "API date string utilized by the GROQ vision runner.",
         defaultValue: "2024-01-01",
       },
     ],

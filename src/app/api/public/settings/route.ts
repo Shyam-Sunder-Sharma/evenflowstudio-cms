@@ -1,29 +1,33 @@
 import { NextResponse } from "next/server";
-import { getPlugins } from "@/actions/pluginActions";
+import { getAllPlugins } from "@/actions/pluginActions";
 
 export async function GET() {
   try {
-    const plugins = await getPlugins();
+    const plugins = await getAllPlugins();
 
     const pluginMap: Record<string, any> = {};
     const activeKeys: string[] = [];
 
     plugins.forEach((p) => {
       if (p.enabled) {
-        activeKeys.push(p.key);
+        activeKeys.push(p.key || p.slug);
       }
 
-      pluginMap[p.key] = {
+      pluginMap[p.key || p.slug] = {
         name: p.name,
         category: p.category,
+        pluginType: p.pluginType,
         enabled: p.enabled,
+        isBuiltIn: p.isBuiltIn,
+        endpointOrScript: p.endpointOrScript,
         settings: p.settings,
+        customConfigJson: p.customConfigJson,
       };
     });
 
-    const seoPlugin = plugins.find((p) => p.key === "seo-manager");
-    const gaPlugin = plugins.find((p) => p.key === "google-analytics");
-    const webhookPlugin = plugins.find((p) => p.key === "webhook-sync");
+    const seoPlugin = plugins.find((p) => p.key === "seo-manager" || p.slug === "seo-manager");
+    const gaPlugin = plugins.find((p) => p.key === "google-analytics" || p.slug === "google-analytics");
+    const webhookPlugin = plugins.find((p) => p.key === "webhook-sync" || p.slug === "webhook-sync");
 
     return NextResponse.json(
       {
@@ -44,7 +48,10 @@ export async function GET() {
           },
           webhook: {
             enabled: Boolean(webhookPlugin?.enabled),
-            webhookUrl: webhookPlugin?.settings?.webhookUrl || "",
+            webhookUrl:
+              webhookPlugin?.endpointOrScript ||
+              webhookPlugin?.settings?.webhookUrl ||
+              "",
           },
         },
         plugins: pluginMap,
@@ -57,6 +64,7 @@ export async function GET() {
       {
         headers: {
           "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+          "Access-Control-Allow-Origin": "*",
         },
       }
     );
