@@ -503,9 +503,9 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                 {/* Trigger Events badges */}
                 {plugin.triggerEvents && plugin.triggerEvents.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-1">
-                    {plugin.triggerEvents.map((evt) => (
+                    {plugin.triggerEvents.map((evt, idx) => (
                       <span
-                        key={evt}
+                        key={`${evt}-${idx}`}
                         className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800/90 text-indigo-300 font-mono"
                       >
                         ⚡ {evt}
