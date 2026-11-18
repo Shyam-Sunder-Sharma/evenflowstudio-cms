@@ -34,14 +34,6 @@ An editorial-grade, bilingual Headless Content Management System built for **Eve
 
 ---
 
-## 🔑 Default Admin Credentials
-
-- **Login URL**: `http://localhost:3000/login`
-- **Email**: `admin@evenflowstudio.com`
-- **Password**: `Admin@12345`
-
----
-
 ## 🚀 Quick Start Guide
 
 ### 1. Environment Configuration
@@ -53,12 +45,6 @@ Create `.env.local` inside the project root:
 NEXT_PUBLIC_SANITY_PROJECT_ID="1qgi0ztq"
 NEXT_PUBLIC_SANITY_DATASET="production"
 SANITY_API_WRITE_TOKEN="your_sanity_write_token"
-
-# Admin Authentication
-ADMIN_EMAIL="admin@evenflowstudio.com"
-ADMIN_PASSWORD="Admin@12345"
-AUTH_SECRET="475cd4c8200e80bf924b94406c8b4251302e308bb36fc9e2e6e2a71422dc2daa"
-```
 
 A template is provided in `.env.example`.
 
