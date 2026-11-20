@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
 import { client } from "@/sanity/lib/client";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+};
+
+export async function OPTIONS() {
+  return new NextResponse(null, { status: 204, headers: corsHeaders });
+}
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -54,26 +64,32 @@ export async function GET(request: Request) {
       client.fetch<number>(totalQuery, params, { cache: "no-store" }),
     ]);
 
-    return NextResponse.json({
-      data: projects || [],
-      meta: {
-        total: total || 0,
-        page,
-        limit,
-        totalPages: Math.ceil((total || 0) / limit),
+    return NextResponse.json(
+      {
+        data: projects || [],
+        meta: {
+          total: total || 0,
+          page,
+          limit,
+          totalPages: Math.ceil((total || 0) / limit),
+        },
       },
-    });
+      { headers: corsHeaders }
+    );
   } catch (error: any) {
     console.error("Public portfolio API error:", error?.message || error);
-    return NextResponse.json({
-      data: [],
-      meta: {
-        total: 0,
-        page: 1,
-        limit: 50,
-        totalPages: 0,
+    return NextResponse.json(
+      {
+        data: [],
+        meta: {
+          total: 0,
+          page: 1,
+          limit: 50,
+          totalPages: 0,
+        },
+        notice: "Sanity project not yet configured or reachable. Once credentials are provided, data will populate.",
       },
-      notice: "Sanity project not yet configured or reachable. Once credentials are provided, data will populate.",
-    });
+      { headers: corsHeaders }
+    );
   }
 }
