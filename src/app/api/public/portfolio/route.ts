@@ -34,6 +34,7 @@ export async function GET(request: Request) {
     const query = `*[${filter}] | order(publishedAt desc, _createdAt desc) [${start}...${end}] {
       "id": _id,
       title,
+      titlePl,
       "slugPl": slugPl.current,
       "slugEn": slugEn.current,
       status,
@@ -49,11 +50,14 @@ export async function GET(request: Request) {
       "category": category->{
         "id": _id,
         title,
+        titlePl,
         "slug": slug.current
       },
       description,
+      descriptionPl,
       projectUrl,
       client,
+      clientPl,
       author,
       publishedAt
     }`;

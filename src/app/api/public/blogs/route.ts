@@ -40,6 +40,7 @@ export async function GET(request: Request) {
     const query = `*[${filter}] | order(publishedAt desc, _createdAt desc) [${start}...${end}] {
       "id": _id,
       title,
+      titlePl,
       "slugEn": slugEn.current,
       "slugPl": slugPl.current,
       status,
@@ -50,13 +51,16 @@ export async function GET(request: Request) {
       "categories": categories[]->{
         "id": _id,
         title,
+        titlePl,
         "slug": slug.current
       },
       tags,
       author,
       publishedAt,
       excerpt,
-      body
+      excerptPl,
+      body,
+      bodyPl
     }`;
 
     const totalQuery = `count(*[${filter}])`;

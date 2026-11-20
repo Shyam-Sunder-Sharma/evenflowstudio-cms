@@ -7,9 +7,15 @@ export const category = defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Title (English / Default)",
       type: "string",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "titlePl",
+      title: "Title (Polish)",
+      type: "string",
+      description: "Optional Polish category title. Falls back to default title if empty.",
     }),
     defineField({
       name: "slug",

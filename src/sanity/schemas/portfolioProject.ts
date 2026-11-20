@@ -7,9 +7,15 @@ export const portfolioProject = defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Title (English / Default)",
       type: "string",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "titlePl",
+      title: "Title (Polish)",
+      type: "string",
+      description: "Optional Polish title. Falls back to default title if empty.",
     }),
     defineField({
       name: "slugPl",
@@ -86,8 +92,30 @@ export const portfolioProject = defineType({
     }),
     defineField({
       name: "description",
-      title: "Description",
+      title: "Description (English / Default)",
       type: "array",
+      of: [
+        {
+          type: "block",
+        },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+            }),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: "descriptionPl",
+      title: "Description (Polish)",
+      type: "array",
+      description: "Optional Polish description. Falls back to default description if empty.",
       of: [
         {
           type: "block",
@@ -112,8 +140,14 @@ export const portfolioProject = defineType({
     }),
     defineField({
       name: "client",
-      title: "Client",
+      title: "Client (English / Default)",
       type: "string",
+    }),
+    defineField({
+      name: "clientPl",
+      title: "Client (Polish)",
+      type: "string",
+      description: "Optional Polish client text. Falls back to default client if empty.",
     }),
     defineField({
       name: "author",

@@ -9,6 +9,7 @@ import { runActivePlugins } from "../lib/pluginRunner";
 export interface BlogPostItem {
   _id: string;
   title: string;
+  titlePl?: string;
   slugEn: { current: string };
   slugPl: { current: string };
   status: "published" | "draft";
@@ -21,7 +22,9 @@ export interface BlogPostItem {
   author?: string;
   publishedAt?: string;
   excerpt?: string;
+  excerptPl?: string;
   body?: any[];
+  bodyPl?: any[];
 }
 
 export async function getBlogPosts(options?: {

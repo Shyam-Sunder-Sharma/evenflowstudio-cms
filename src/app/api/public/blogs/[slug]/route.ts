@@ -28,6 +28,7 @@ export async function GET(
     const query = `*[_type == "blogPost" && status == "published" && (slugEn.current == $slug || slugPl.current == $slug)][0] {
       "id": _id,
       title,
+      titlePl,
       "slugEn": slugEn.current,
       "slugPl": slugPl.current,
       status,
@@ -38,13 +39,16 @@ export async function GET(
       "categories": categories[]->{
         "id": _id,
         title,
+        titlePl,
         "slug": slug.current
       },
       tags,
       author,
       publishedAt,
       excerpt,
-      body
+      excerptPl,
+      body,
+      bodyPl
     }`;
 
     const post = await client.fetch(query, { slug }, { cache: "no-store" });

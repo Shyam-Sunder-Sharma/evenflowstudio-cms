@@ -7,9 +7,15 @@ export const blogPost = defineType({
   fields: [
     defineField({
       name: "title",
-      title: "Title",
+      title: "Title (English / Default)",
       type: "string",
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "titlePl",
+      title: "Title (Polish)",
+      type: "string",
+      description: "Optional Polish title. Falls back to default title if empty.",
     }),
     defineField({
       name: "slugEn",
@@ -93,14 +99,43 @@ export const blogPost = defineType({
     }),
     defineField({
       name: "excerpt",
-      title: "Excerpt",
+      title: "Excerpt (English / Default)",
       type: "text",
       rows: 3,
     }),
     defineField({
+      name: "excerptPl",
+      title: "Excerpt (Polish)",
+      type: "text",
+      rows: 3,
+      description: "Optional Polish excerpt. Falls back to default excerpt if empty.",
+    }),
+    defineField({
       name: "body",
-      title: "Body",
+      title: "Body (English / Default)",
       type: "array",
+      of: [
+        {
+          type: "block",
+        },
+        {
+          type: "image",
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: "alt",
+              title: "Alt Text",
+              type: "string",
+            }),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: "bodyPl",
+      title: "Body (Polish)",
+      type: "array",
+      description: "Optional Polish body. Falls back to default body if empty.",
       of: [
         {
           type: "block",

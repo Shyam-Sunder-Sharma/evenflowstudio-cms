@@ -9,6 +9,7 @@ import { runActivePlugins } from "../lib/pluginRunner";
 export interface PortfolioProjectItem {
   _id: string;
   title: string;
+  titlePl?: string;
   slugPl: { current: string };
   slugEn: { current: string };
   status: "published" | "draft";
@@ -21,10 +22,12 @@ export interface PortfolioProjectItem {
     asset?: { _id: string; url?: string };
     alt?: string;
   }>;
-  category?: { _id: string; title: string };
+  category?: { _id: string; title: string; titlePl?: string };
   description?: any[];
+  descriptionPl?: any[];
   projectUrl?: string;
   client?: string;
+  clientPl?: string;
   author?: string;
   publishedAt?: string;
 }
