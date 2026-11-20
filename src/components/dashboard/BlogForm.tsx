@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   ArrowLeft,
   Upload,
-  Sparkles,
   Check,
   AlertCircle,
   Image as ImageIcon,
@@ -137,22 +136,22 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-5xl">
       {/* Top action bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80">
         <Link
           href="/dashboard/blogs"
-          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition font-mono"
         >
-          <ArrowLeft className="w-4 h-4" />
-          <span>Back to Blog Posts</span>
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Back to Articles</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             disabled={isSubmitting}
             onClick={() => handleSubmit("draft")}
-            className="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition disabled:opacity-50 cursor-pointer"
+            className="px-3.5 py-2 rounded-md text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition disabled:opacity-50 cursor-pointer"
           >
             Save Draft
           </button>
@@ -160,10 +159,10 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
             type="button"
             disabled={isSubmitting}
             onClick={() => handleSubmit("published")}
-            className="px-5 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-indigo-600 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white shadow-lg shadow-indigo-600/30 transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 rounded-md text-xs font-semibold bg-[#ccff00] hover:bg-[#b8e600] text-black transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             {isSubmitting && (
-              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
             )}
             <span>{isEditing ? "Update & Publish" : "Publish Now"}</span>
           </button>
@@ -171,65 +170,50 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
       </div>
 
       {error && (
-        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-3 text-rose-400 text-sm">
-          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-md bg-rose-500/10 border border-rose-500/20 flex items-start gap-2.5 text-rose-400 text-xs">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>{error}</div>
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Content Form */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Title */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-4">
+        {/* Main Editorial Stream */}
+        <div className="lg:col-span-2 space-y-5">
+          {/* Title & Slugs */}
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Article Title <span className="text-rose-400">*</span>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1.5 font-semibold">
+                Article Title <span className="text-[#ccff00]">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="e.g. Modern Minimalist Branding: The Evenflow Guide"
-                className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 text-base font-medium focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="e.g. Spatial Systems & Monolithic Identity in Architectural Design"
+                className="w-full px-3.5 py-2.5 rounded-md bg-[#09090b] border border-zinc-800 text-white placeholder-zinc-600 text-sm font-medium focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             {/* Slugs */}
-            <div className="pt-2 border-t border-slate-800/80 space-y-3">
+            <div className="pt-3 border-t border-zinc-800/80 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Bilingual URLs (Slugs)
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                  Bilingual Slugs
                 </span>
                 <button
                   type="button"
                   onClick={() => setAutoSlug(!autoSlug)}
-                  className="text-xs text-indigo-400 hover:text-indigo-300 font-medium cursor-pointer"
+                  className="text-[11px] font-mono text-zinc-400 hover:text-white transition cursor-pointer"
                 >
-                  {autoSlug ? "Disable auto-slug" : "Enable auto-slug"}
+                  {autoSlug ? "[ Auto-sync: ON ]" : "[ Auto-sync: OFF ]"}
                 </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                    English URL (/slugEn)
-                  </label>
-                  <input
-                    type="text"
-                    value={slugEn}
-                    onChange={(e) => {
-                      setAutoSlug(false);
-                      setSlugEn(e.target.value);
-                    }}
-                    placeholder="modern-minimalist-branding"
-                    className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-indigo-300 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                    Polish URL (/slugPl)
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                    Polish Slug (/slugPl)
                   </label>
                   <input
                     type="text"
@@ -238,8 +222,23 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
                       setAutoSlug(false);
                       setSlugPl(e.target.value);
                     }}
-                    placeholder="nowoczesny-branding-minimalistyczny"
-                    className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-violet-300 font-mono focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    placeholder="systemy-przestrzenne-identyfikacja"
+                    className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                    English Slug (/slugEn)
+                  </label>
+                  <input
+                    type="text"
+                    value={slugEn}
+                    onChange={(e) => {
+                      setAutoSlug(false);
+                      setSlugEn(e.target.value);
+                    }}
+                    placeholder="spatial-systems-monolithic-identity"
+                    className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
                   />
                 </div>
               </div>
@@ -247,50 +246,50 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
           </div>
 
           {/* Excerpt */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-              Excerpt / Meta Summary
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg">
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1.5 font-semibold">
+              Excerpt / Abstract
             </label>
             <textarea
               rows={3}
               value={excerpt}
               onChange={(e) => setExcerpt(e.target.value)}
-              placeholder="Brief summary displayed on social previews, article lists, and PHP endpoints..."
-              className="w-full px-4 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed"
+              placeholder="Concise abstract for card previews, meta descriptions, and headless client cards..."
+              className="w-full px-3.5 py-2.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 leading-relaxed transition"
             />
           </div>
 
           {/* Body Content */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Body Content (Portable Text Markdown/Plain)
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                Narrative Content (Portable Text)
               </label>
-              <span className="text-[11px] text-slate-500">
-                Separate paragraphs with double newlines
+              <span className="text-[10px] text-zinc-400 font-mono">
+                Markdown paragraphs mapped to Sanity block schema
               </span>
             </div>
             <textarea
-              rows={12}
+              rows={14}
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="Write your article narrative here... Each paragraph will be automatically structured into standard Sanity Portable Text blocks."
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed font-mono"
+              placeholder="Compose your editorial article narrative here. Double newlines designate separate text blocks..."
+              className="w-full px-3.5 py-3 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 leading-relaxed font-mono transition"
             />
           </div>
         </div>
 
         {/* Sidebar Settings */}
-        <div className="space-y-6">
+        <div className="space-y-5">
           {/* Featured Image */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-3">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
               Featured Image
             </span>
 
             {imagePreview ? (
-              <div className="space-y-3">
-                <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+              <div className="space-y-2.5">
+                <div className="relative aspect-video rounded-md overflow-hidden border border-zinc-800 bg-zinc-950">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={imagePreview}
@@ -298,7 +297,7 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <label className="block text-center py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium cursor-pointer transition">
+                <label className="block text-center py-1.5 px-3 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono cursor-pointer transition">
                   Replace Image
                   <input
                     type="file"
@@ -309,15 +308,15 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
                 </label>
               </div>
             ) : (
-              <label className="border-2 border-dashed border-slate-800 hover:border-indigo-500/50 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition text-center group bg-slate-950/40">
-                <div className="p-3 rounded-xl bg-slate-800 text-slate-400 group-hover:text-indigo-400 transition mb-2">
-                  <Upload className="w-5 h-5" />
+              <label className="border border-dashed border-zinc-700 hover:border-zinc-500 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer transition text-center bg-zinc-950/40">
+                <div className="p-2.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400 mb-2">
+                  <Upload className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-medium text-slate-300">
-                  Upload article banner
+                <span className="text-xs font-medium text-zinc-300">
+                  Upload article image
                 </span>
-                <span className="text-[11px] text-slate-500 mt-1">
-                  PNG, JPG, WEBP up to 10MB
+                <span className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  WEBP, JPG, PNG up to 10MB
                 </span>
                 <input
                   type="file"
@@ -329,27 +328,27 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
             )}
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Image Alt Text
               </label>
               <input
                 type="text"
                 value={imageAlt}
                 onChange={(e) => setImageAlt(e.target.value)}
-                placeholder="Accessible description of image"
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Architectural overview description"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
           </div>
 
           {/* Categories */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-2.5">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
               Categories
             </span>
-            <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+            <div className="space-y-1 max-h-48 overflow-y-auto pr-1">
               {categories.length === 0 ? (
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-zinc-500 font-mono">
                   No categories found. Create some in the Categories tab.
                 </p>
               ) : (
@@ -360,14 +359,14 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
                       key={cat._id}
                       type="button"
                       onClick={() => toggleCategory(cat._id)}
-                      className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-medium transition cursor-pointer text-left ${
+                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-md text-xs font-mono transition cursor-pointer text-left ${
                         isChecked
-                          ? "bg-indigo-600/20 text-indigo-300 border border-indigo-500/30"
-                          : "bg-slate-950/60 text-slate-400 hover:text-slate-200 border border-slate-800"
+                          ? "bg-zinc-800 text-white border border-zinc-700"
+                          : "bg-zinc-950/60 text-zinc-400 hover:text-zinc-200 border border-zinc-800"
                       }`}
                     >
                       <span>{cat.title}</span>
-                      {isChecked && <Check className="w-3.5 h-3.5 text-indigo-400" />}
+                      {isChecked && <Check className="w-3 h-3 text-[#ccff00]" />}
                     </button>
                   );
                 })
@@ -376,44 +375,44 @@ export function BlogForm({ initialData, categories }: BlogFormProps) {
           </div>
 
           {/* Tags */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-2">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-2">
+            <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
               Tags (Comma separated)
             </label>
             <input
               type="text"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-              placeholder="Design, Branding, Typography"
-              className="w-full px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+              placeholder="Branding, Spatial Design, Materiality"
+              className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono transition"
             />
           </div>
 
           {/* Publishing Metadata */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
-              Publishing Info
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-3">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
+              Metadata
             </span>
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Author
               </label>
               <input
                 type="text"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono transition"
               />
             </div>
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Publication Date & Time
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Publication Timestamp
               </label>
               <input
                 type="datetime-local"
                 value={publishedAt}
                 onChange={(e) => setPublishedAt(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono transition"
               />
             </div>
           </div>

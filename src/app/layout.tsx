@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Evenflowstudio Headless CMS",
-  description: "Editorial Headless CMS & Public API for Evenflowstudio",
+  title: "Evenflowstudio — Editorial Headless CMS",
+  description: "Editorial Headless CMS & Public API Engine for Evenflowstudio",
 };
 
 export default function RootLayout({
@@ -25,9 +25,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
-      <body className="min-h-full flex flex-col bg-slate-900 text-slate-100 font-sans">
+      <body className="min-h-full flex flex-col bg-[#09090b] text-zinc-100 font-sans selection:bg-[#ccff00] selection:text-black">
         {children}
       </body>
     </html>

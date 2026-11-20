@@ -13,7 +13,6 @@ import {
   CheckCircle2,
   XCircle,
   X,
-  Sparkles,
   Info,
   Check,
   Puzzle,
@@ -234,7 +233,6 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
           setModalError(result.error);
         } else {
           setModalSuccess(true);
-          // Refresh list from server
           const refreshed = await getAllPlugins();
           setPlugins(refreshed);
           setTimeout(() => {
@@ -305,87 +303,74 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
   };
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-200">
+    <div className="space-y-6 animate-in fade-in duration-200">
       {/* Top Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-            <span>Plugins &amp; Integrations</span>
-            <span className="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-mono font-medium">
-              v2 Dynamic Architecture
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+              Plugins &amp; Integrations
+            </h1>
+            <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/80">
+              v2 Engine
             </span>
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Activate built-in extensions or register custom webhooks, frontend scripts, and API connectors anytime without touching code.
+          </div>
+          <p className="text-xs text-zinc-400 mt-1">
+            Configure system plugins, webhooks, frontend embed tags, and external API connectors.
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={openAddModal}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-lg shadow-indigo-600/30 transition cursor-pointer active:scale-95"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold shadow-sm transition cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
-            <span>+ Add New Plugin</span>
+            <Plus className="w-3.5 h-3.5" />
+            <span>Add Plugin</span>
           </button>
         </div>
       </div>
 
-      {/* Installed Architecture Info Banner */}
-      <div className="rounded-2xl bg-gradient-to-r from-indigo-950/70 via-slate-900/90 to-purple-950/70 border border-indigo-500/30 p-6 backdrop-blur-xl shadow-xl">
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div className="flex items-start gap-4">
-            <div className="p-3 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 shrink-0">
-              <Blocks className="w-6 h-6" />
+      {/* Info Overview Card */}
+      <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="p-2.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300 shrink-0">
+              <Blocks className="w-4 h-4 text-[#ccff00]" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white flex items-center gap-2">
-                Modular Plugins &amp; External Integrations Hub
-                <span className="text-[11px] px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 font-mono">
-                  Extensible Runtime
-                </span>
+              <h2 className="text-xs font-semibold text-white font-mono uppercase tracking-wider">
+                Extensible Runtime &amp; Public Endpoints
               </h2>
-              <p className="text-sm text-slate-300 mt-1 max-w-2xl leading-relaxed">
-                Registered plugins dynamically inject into your website runtime or fire upon content publishing events.
-                Active plugins instantly synchronize to public JSON endpoints (
-                <code className="text-indigo-400 font-mono text-xs">/api/public/plugins</code> &amp;{" "}
-                <code className="text-indigo-400 font-mono text-xs">/api/public/settings</code>
-                ) for consumption by external PHP/WordPress frontends.
+              <p className="text-xs text-zinc-400 mt-1 max-w-2xl leading-relaxed">
+                Active plugins instantly synchronize to public JSON endpoints (<code className="text-zinc-200 font-mono text-[11px]">/api/public/plugins</code> &amp; <code className="text-zinc-200 font-mono text-[11px]">/api/public/settings</code>) to drive frontend scripts, analytics tags, and external webhook triggers.
               </p>
             </div>
           </div>
-          <div className="flex flex-wrap items-center gap-2.5 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
             <Link
               href="/api/public/plugins"
               target="_blank"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-xs font-mono text-zinc-300 border border-zinc-800 transition"
             >
-              <span>Public Plugins API</span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
+              <span>Plugins API</span>
+              <ExternalLink className="w-3 h-3 text-zinc-500" />
             </Link>
             <Link
               href="/api/public/settings"
               target="_blank"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700/90 text-xs font-semibold text-slate-200 border border-slate-700 transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-zinc-900 hover:bg-zinc-800 text-xs font-mono text-zinc-300 border border-zinc-800 transition"
             >
-              <span>Public Settings API</span>
-              <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-            </Link>
-            <Link
-              href="/studio"
-              target="_blank"
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white shadow-md shadow-indigo-600/25 transition"
-            >
-              <span>Sanity Studio</span>
-              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Settings API</span>
+              <ExternalLink className="w-3 h-3 text-zinc-500" />
             </Link>
           </div>
         </div>
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-1.5">
         {CATEGORIES.map((cat) => {
           const count =
             cat === "All"
@@ -397,16 +382,16 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-mono transition cursor-pointer ${
                 isActive
-                  ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/20"
-                  : "bg-slate-900/80 text-slate-400 hover:text-white hover:bg-slate-800/80 border border-slate-800"
+                  ? "bg-zinc-800 text-white font-medium shadow-sm"
+                  : "bg-[#111113] text-zinc-400 hover:text-white border border-zinc-800"
               }`}
             >
               <span>{cat}</span>
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
-                  isActive ? "bg-white/20 text-white" : "bg-slate-800 text-slate-400"
+                className={`text-[10px] px-1 py-0.2 rounded font-mono ${
+                  isActive ? "bg-zinc-700 text-white" : "text-zinc-500"
                 }`}
               >
                 {count}
@@ -417,7 +402,7 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
       </div>
 
       {/* Plugins Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredPlugins.map((plugin) => {
           const IconComponent = ICON_MAP[plugin.iconName || ""] || Puzzle;
           const isToggling = togglingId === plugin.id;
@@ -428,43 +413,37 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
           return (
             <div
               key={plugin.id}
-              className={`rounded-2xl border transition-all duration-200 flex flex-col justify-between p-6 backdrop-blur-sm relative overflow-hidden group ${
+              className={`rounded-lg border transition-all duration-150 flex flex-col justify-between p-5 ${
                 plugin.enabled
-                  ? "bg-slate-900/80 border-slate-700/80 shadow-lg shadow-indigo-950/20"
-                  : "bg-slate-900/40 border-slate-800/80 opacity-80 hover:opacity-100"
+                  ? "bg-[#111113] border-zinc-700/80"
+                  : "bg-[#111113]/50 border-zinc-800/80 opacity-75 hover:opacity-100"
               }`}
             >
               {/* Card Top */}
               <div>
-                <div className="flex items-start justify-between gap-3 mb-4">
+                <div className="flex items-start justify-between gap-3 mb-3.5">
                   <div
-                    className={`p-3 rounded-xl border transition ${
+                    className={`p-2.5 rounded-md border ${
                       plugin.enabled
-                        ? "bg-indigo-500/15 border-indigo-500/30 text-indigo-400"
-                        : "bg-slate-800/60 border-slate-700/50 text-slate-500"
+                        ? "bg-zinc-900 border-zinc-700 text-white"
+                        : "bg-zinc-950 border-zinc-800 text-zinc-600"
                     }`}
                   >
-                    <IconComponent className="w-5 h-5" />
+                    <IconComponent className="w-4 h-4" />
                   </div>
 
                   <div className="flex items-center gap-1.5">
                     {/* Built-in vs Custom Badge */}
-                    <span
-                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
-                        plugin.isBuiltIn
-                          ? "bg-slate-800 text-slate-400 border border-slate-700"
-                          : "bg-purple-500/15 text-purple-300 border border-purple-500/30"
-                      }`}
-                    >
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-zinc-900 text-zinc-400 border border-zinc-800">
                       {plugin.isBuiltIn ? "Built-in" : "Custom"}
                     </span>
 
                     {/* Active / Inactive Badge */}
                     <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full uppercase tracking-wider ${
+                      className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded ${
                         plugin.enabled
-                          ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30"
-                          : "bg-slate-800 text-slate-400 border border-slate-700"
+                          ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                          : "bg-zinc-900 text-zinc-500 border border-zinc-800"
                       }`}
                     >
                       {plugin.enabled ? "Active" : "Inactive"}
@@ -472,41 +451,37 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
-                      {plugin.category}
-                    </span>
-                    <span className="text-slate-600 text-xs">•</span>
-                    <span className="text-[10px] font-mono text-indigo-400">
-                      {plugin.pluginType}
-                    </span>
+                <div className="space-y-1">
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono text-zinc-500 uppercase tracking-wider">
+                    <span>{plugin.category}</span>
+                    <span>•</span>
+                    <span className="text-zinc-400">{plugin.pluginType}</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-white group-hover:text-indigo-300 transition flex items-center gap-2">
+                  <h3 className="text-sm font-semibold text-white">
                     {plugin.name}
                   </h3>
 
-                  <p className="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                  <p className="text-xs text-zinc-400 leading-relaxed line-clamp-2 mt-1">
                     {plugin.description || "No description provided."}
                   </p>
                 </div>
 
                 {/* Endpoint or Script Preview */}
                 {plugin.endpointOrScript && (
-                  <div className="mt-4 p-2.5 rounded-xl bg-slate-950/70 border border-slate-800/80 font-mono text-[11px] text-slate-400 truncate">
-                    <span className="text-slate-500 select-none">Target: </span>
-                    <span className="text-slate-300">{plugin.endpointOrScript}</span>
+                  <div className="mt-3 p-2 rounded-md bg-[#09090b] border border-zinc-800 font-mono text-[10px] text-zinc-400 truncate">
+                    <span className="text-zinc-600 select-none">Target: </span>
+                    <span className="text-zinc-300">{plugin.endpointOrScript}</span>
                   </div>
                 )}
 
                 {/* Trigger Events badges */}
                 {plugin.triggerEvents && plugin.triggerEvents.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-1">
+                  <div className="mt-2.5 flex flex-wrap gap-1">
                     {plugin.triggerEvents.map((evt, idx) => (
                       <span
                         key={`${evt}-${idx}`}
-                        className="text-[10px] px-2 py-0.5 rounded-md bg-slate-800/90 text-indigo-300 font-mono"
+                        className="text-[9px] px-1.5 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-400 font-mono"
                       >
                         ⚡ {evt}
                       </span>
@@ -516,28 +491,28 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
 
                 {/* Live Test Status Feedback */}
                 {testState && (
-                  <div className="mt-3">
+                  <div className="mt-2.5">
                     {testState.loading ? (
-                      <div className="flex items-center gap-2 p-2 rounded-xl bg-slate-800/50 border border-slate-700 text-xs text-slate-300 animate-pulse">
-                        <RefreshCw className="w-3.5 h-3.5 animate-spin text-indigo-400" />
-                        <span>Pinging endpoint...</span>
+                      <div className="flex items-center gap-2 p-2 rounded-md bg-zinc-900 border border-zinc-800 text-xs text-zinc-300 animate-pulse">
+                        <RefreshCw className="w-3 h-3 animate-spin text-[#ccff00]" />
+                        <span className="font-mono text-[11px]">Pinging endpoint...</span>
                       </div>
                     ) : testState.success ? (
-                      <div className="flex items-center justify-between p-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs text-emerald-400 font-mono">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-400 font-mono">
                         <div className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <CheckCircle2 className="w-3 h-3" />
                           <span>HTTP {testState.status} {testState.statusText}</span>
                         </div>
-                        <span className="text-[11px] text-emerald-500">{testState.latencyMs}ms</span>
+                        <span className="text-[10px] text-emerald-500">{testState.latencyMs}ms</span>
                       </div>
                     ) : (
-                      <div className="flex items-center justify-between p-2 rounded-xl bg-rose-500/10 border border-rose-500/30 text-xs text-rose-400 font-mono">
+                      <div className="flex items-center justify-between p-2 rounded-md bg-rose-500/10 border border-rose-500/20 text-xs text-rose-400 font-mono">
                         <div className="flex items-center gap-1.5 truncate">
-                          <XCircle className="w-3.5 h-3.5 shrink-0" />
+                          <XCircle className="w-3 h-3 shrink-0" />
                           <span className="truncate">{testState.error || `HTTP ${testState.status}`}</span>
                         </div>
                         {testState.latencyMs !== undefined && (
-                          <span className="text-[11px] text-rose-500 shrink-0 ml-1">{testState.latencyMs}ms</span>
+                          <span className="text-[10px] text-rose-500 shrink-0 ml-1">{testState.latencyMs}ms</span>
                         )}
                       </div>
                     )}
@@ -546,28 +521,28 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
               </div>
 
               {/* Card Bottom / Action Toolbar */}
-              <div className="pt-5 mt-5 border-t border-slate-800/80 flex items-center justify-between gap-2">
-                <div className="flex flex-wrap items-center gap-1.5">
+              <div className="pt-4 mt-4 border-t border-zinc-800/80 flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5">
                   {/* Configure / Edit */}
                   <button
                     type="button"
                     onClick={() => openEditModal(plugin)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 transition cursor-pointer"
+                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-zinc-900 hover:bg-zinc-800 text-zinc-200 text-xs font-mono border border-zinc-800 transition cursor-pointer"
                   >
-                    <Settings className="w-3.5 h-3.5 text-slate-400" />
+                    <Settings className="w-3 h-3 text-zinc-400" />
                     <span>Configure</span>
                   </button>
 
-                  {/* Test Connection Button (for webhooks/APIs) */}
+                  {/* Test Connection Button */}
                   {canTest && (
                     <button
                       type="button"
                       onClick={() => handleTestConnection(plugin)}
                       disabled={testState?.loading}
                       title="Send test ping"
-                      className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white text-xs border border-slate-700 transition cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-1 px-2 py-1 rounded-md bg-zinc-900 hover:bg-zinc-800 text-zinc-300 text-xs font-mono border border-zinc-800 transition cursor-pointer disabled:opacity-50"
                     >
-                      <Play className="w-3 h-3 text-indigo-400" />
+                      <Play className="w-2.5 h-2.5 text-[#ccff00]" />
                       <span className="text-[11px]">Test</span>
                     </button>
                   )}
@@ -577,10 +552,10 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     <Link
                       href={plugin.externalLink}
                       target="_blank"
-                      className="p-1.5 rounded-xl bg-slate-800/80 hover:bg-slate-700 text-slate-400 hover:text-white transition"
-                      title="Open tool in new tab"
+                      className="p-1 rounded-md bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-800 transition"
+                      title="Open external documentation"
                     >
-                      <ExternalLink className="w-3.5 h-3.5" />
+                      <ExternalLink className="w-3 h-3" />
                     </Link>
                   )}
 
@@ -589,10 +564,10 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     <button
                       type="button"
                       onClick={() => setPluginToDelete(plugin)}
-                      className="p-1.5 rounded-xl bg-slate-800/80 hover:bg-rose-500/20 text-slate-400 hover:text-rose-400 border border-slate-700/60 hover:border-rose-500/40 transition cursor-pointer"
+                      className="p-1 rounded-md bg-zinc-900 hover:bg-rose-500/20 text-zinc-500 hover:text-rose-400 border border-zinc-800 transition cursor-pointer"
                       title="Delete custom plugin"
                     >
-                      <Trash2 className="w-3.5 h-3.5" />
+                      <Trash2 className="w-3 h-3" />
                     </button>
                   )}
                 </div>
@@ -603,13 +578,13 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                   onClick={() => handleToggle(plugin)}
                   disabled={isToggling}
                   title={`Click to ${plugin.enabled ? "disable" : "enable"}`}
-                  className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
-                    plugin.enabled ? "bg-indigo-600" : "bg-slate-700"
+                  className={`relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                    plugin.enabled ? "bg-[#ccff00]" : "bg-zinc-800"
                   }`}
                 >
                   <span
-                    className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
-                      plugin.enabled ? "translate-x-5" : "translate-x-0"
+                    className={`pointer-events-none inline-block h-4 w-4 transform rounded-full shadow-sm transition duration-200 ease-in-out mt-0.5 ${
+                      plugin.enabled ? "translate-x-4 bg-black" : "translate-x-0.5 bg-zinc-400"
                     }`}
                   />
                 </button>
@@ -622,22 +597,22 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
       {/* Add / Edit Plugin Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150 overflow-y-auto">
-          <div className="w-full max-w-2xl my-8 rounded-2xl bg-slate-900 border border-slate-800 shadow-2xl text-slate-100 overflow-hidden">
+          <div className="w-full max-w-xl my-8 rounded-lg bg-[#111113] border border-zinc-800 shadow-2xl text-zinc-100 overflow-hidden">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 border-b border-slate-800 bg-slate-950/40">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                  {editingPlugin ? <Settings className="w-5 h-5" /> : <Plus className="w-5 h-5" />}
+            <div className="flex items-center justify-between p-5 border-b border-zinc-800 bg-[#0d0d0f]">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-300">
+                  {editingPlugin ? <Settings className="w-4 h-4 text-[#ccff00]" /> : <Plus className="w-4 h-4 text-[#ccff00]" />}
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">
-                    {editingPlugin ? `Configure ${editingPlugin.name}` : "Register New Custom Plugin"}
+                  <h3 className="text-sm font-semibold text-white font-mono uppercase tracking-wider">
+                    {editingPlugin ? `Configure ${editingPlugin.name}` : "Register Custom Plugin"}
                   </h3>
-                  <span className="text-xs text-indigo-400 font-medium">
+                  <span className="text-[10px] text-zinc-400 font-mono">
                     {editingPlugin
                       ? editingPlugin.isBuiltIn
-                        ? "Built-in System Settings"
-                        : "Custom Plugin Definition"
+                        ? "Built-in System Parameters"
+                        : "Custom Plugin Specification"
                       : "Add Webhook, Tag Injector, or API Connector"}
                   </span>
                 </div>
@@ -645,33 +620,33 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
               <button
                 type="button"
                 onClick={() => setIsModalOpen(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition"
+                className="p-1 rounded-md text-zinc-500 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Modal Form */}
-            <form onSubmit={handleSubmitForm} className="p-6 space-y-5 max-h-[75vh] overflow-y-auto">
+            <form onSubmit={handleSubmitForm} className="p-5 space-y-4 max-h-[75vh] overflow-y-auto">
               {modalError && (
-                <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
+                <div className="p-2.5 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2">
                   <XCircle className="w-4 h-4 shrink-0" />
                   <span>{modalError}</span>
                 </div>
               )}
 
               {modalSuccess && (
-                <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
+                <div className="p-2.5 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 shrink-0" />
-                  <span>Plugin saved successfully!</span>
+                  <span>Plugin configuration saved.</span>
                 </div>
               )}
 
               {/* Plugin Name & Slug */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Plugin Name <span className="text-rose-400">*</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
+                    Plugin Name <span className="text-[#ccff00]">*</span>
                   </label>
                   <input
                     type="text"
@@ -679,13 +654,13 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
                     placeholder="e.g. Discord Deployment Webhook"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition"
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Plugin Key / Slug
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
+                    Plugin Slug
                   </label>
                   <input
                     type="text"
@@ -693,66 +668,66 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     disabled={editingPlugin?.isBuiltIn}
                     onChange={(e) => setFormSlug(e.target.value)}
                     placeholder="e.g. discord-webhook"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono disabled:opacity-50"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono disabled:opacity-50 transition"
                   />
                 </div>
               </div>
 
               {/* Category & Plugin Type */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Category <span className="text-rose-400">*</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
+                    Category <span className="text-[#ccff00]">*</span>
                   </label>
                   <select
                     value={formCategory}
                     onChange={(e) => setFormCategory(e.target.value as PluginCategory)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
                   >
-                    <option value="Webhook">Webhook</option>
-                    <option value="Script / Embed">Script / Embed</option>
-                    <option value="Analytics">Analytics</option>
-                    <option value="SEO">SEO</option>
-                    <option value="Media">Media</option>
-                    <option value="Custom Integration">Custom Integration</option>
+                    <option value="Webhook" className="bg-[#111113]">Webhook</option>
+                    <option value="Script / Embed" className="bg-[#111113]">Script / Embed</option>
+                    <option value="Analytics" className="bg-[#111113]">Analytics</option>
+                    <option value="SEO" className="bg-[#111113]">SEO</option>
+                    <option value="Media" className="bg-[#111113]">Media</option>
+                    <option value="Custom Integration" className="bg-[#111113]">Custom Integration</option>
                   </select>
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
-                    Plugin Type <span className="text-rose-400">*</span>
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
+                    Plugin Type <span className="text-[#ccff00]">*</span>
                   </label>
                   <select
                     value={formPluginType}
                     disabled={editingPlugin?.isBuiltIn}
                     onChange={(e) => setFormPluginType(e.target.value as PluginType)}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer disabled:opacity-50"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white font-mono focus:outline-none focus:border-zinc-500 cursor-pointer disabled:opacity-50"
                   >
-                    <option value="webhook">Webhook Trigger (HTTP POST)</option>
-                    <option value="script_inject">Frontend Script / Tag Injector</option>
-                    <option value="api_connector">External API Connector</option>
-                    <option value="studio_tool">Sanity Studio Tool</option>
+                    <option value="webhook" className="bg-[#111113]">Webhook Trigger (HTTP POST)</option>
+                    <option value="script_inject" className="bg-[#111113]">Frontend Script / Tag Injector</option>
+                    <option value="api_connector" className="bg-[#111113]">External API Connector</option>
+                    <option value="studio_tool" className="bg-[#111113]">Sanity Studio Tool</option>
                   </select>
                 </div>
               </div>
 
               {/* Description */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-mono uppercase text-zinc-400">
                   Description
                 </label>
                 <textarea
                   rows={2}
                   value={formDescription}
                   onChange={(e) => setFormDescription(e.target.value)}
-                  placeholder="Summarize what this plugin triggers or manages..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 leading-relaxed"
+                  placeholder="Summarize what this integration triggers or manages..."
+                  className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 leading-relaxed transition"
                 />
               </div>
 
               {/* Dynamic Target Endpoint or Script Snippet */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-mono uppercase text-zinc-400">
                   {formPluginType === "webhook"
                     ? "Webhook Destination URL (HTTP POST Target)"
                     : formPluginType === "script_inject"
@@ -767,7 +742,7 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     value={formEndpointOrScript}
                     onChange={(e) => setFormEndpointOrScript(e.target.value)}
                     placeholder="<script async src='https://.../script.js'></script>"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono leading-relaxed"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono leading-relaxed transition"
                   />
                 ) : (
                   <input
@@ -781,22 +756,22 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                         ? "https://api.thirdparty.com/v1"
                         : "/studio/vision"
                     }
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono transition"
                   />
                 )}
-                <p className="text-[11px] text-slate-500">
+                <p className="text-[10px] text-zinc-500 font-mono">
                   {formPluginType === "webhook"
                     ? "Payload will be sent via HTTP POST with automatic event signature headers."
                     : formPluginType === "script_inject"
-                    ? "Exposed via /api/public/plugins so external PHP pages can inject tracking/embed code."
-                    : "Managed endpoint for external system queries."}
+                    ? "Exposed via /api/public/plugins so frontend pages can inject tracking code."
+                    : "Managed endpoint for external queries."}
                 </p>
               </div>
 
-              {/* API Key / Secret Token (for webhooks & APIs) */}
+              {/* API Key / Secret Token */}
               {(formPluginType === "webhook" || formPluginType === "api_connector") && (
-                <div className="space-y-1.5">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                <div className="space-y-1">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
                     API Key / Secret Token (Optional)
                   </label>
                   <input
@@ -804,38 +779,38 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                     value={formApiKey}
                     onChange={(e) => setFormApiKey(e.target.value)}
                     placeholder="Sent via Authorization: Bearer <key> header"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono"
+                    className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono transition"
                   />
                 </div>
               )}
 
               {/* Trigger Events Checkboxes */}
               {(formPluginType === "webhook" || formPluginType === "api_connector") && (
-                <div className="space-y-2">
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+                <div className="space-y-1.5">
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400">
                     Auto-Trigger Events
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 rounded-xl bg-slate-950/60 border border-slate-800">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-3 rounded-md bg-[#09090b] border border-zinc-800">
                     {TRIGGER_EVENT_OPTIONS.map((opt) => {
                       const isChecked = formTriggerEvents.includes(opt.id);
                       return (
                         <label
                           key={opt.id}
-                          className={`flex items-start gap-2.5 p-2 rounded-lg cursor-pointer transition text-xs ${
+                          className={`flex items-start gap-2 p-1.5 rounded cursor-pointer transition text-xs ${
                             isChecked
-                              ? "bg-indigo-600/15 border border-indigo-500/30 text-white"
-                              : "hover:bg-slate-800/50 text-slate-400"
+                              ? "bg-zinc-800/80 text-white"
+                              : "hover:bg-zinc-900 text-zinc-400"
                           }`}
                         >
                           <input
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => toggleTriggerEvent(opt.id)}
-                            className="mt-0.5 rounded border-slate-700 text-indigo-600 focus:ring-indigo-500"
+                            className="mt-0.5 rounded border-zinc-700 text-black focus:ring-zinc-500"
                           />
                           <div>
-                            <span className="font-semibold text-white block">{opt.label}</span>
-                            <span className="text-[10px] text-slate-500 font-mono">{opt.id}</span>
+                            <span className="font-medium text-white block text-xs">{opt.label}</span>
+                            <span className="text-[10px] text-zinc-500 font-mono">{opt.id}</span>
                           </div>
                         </label>
                       );
@@ -844,15 +819,15 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                 </div>
               )}
 
-              {/* Built-in specific settings fields (if editing a built-in plugin with schema fields) */}
+              {/* Built-in specific settings fields */}
               {editingPlugin?.fields && editingPlugin.fields.length > 0 && (
-                <div className="space-y-3 pt-3 border-t border-slate-800">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-400">
-                    System Plugin Parameters
+                <div className="space-y-2.5 pt-2.5 border-t border-zinc-800">
+                  <h4 className="text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400">
+                    System Parameters
                   </h4>
                   {editingPlugin.fields.map((field) => (
                     <div key={field.key} className="space-y-1">
-                      <label className="block text-xs font-medium text-slate-300">
+                      <label className="block text-[10px] font-mono uppercase text-zinc-400">
                         {field.label}
                       </label>
                       <input
@@ -865,10 +840,10 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                           })
                         }
                         placeholder={field.placeholder}
-                        className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                        className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white font-mono focus:outline-none focus:border-zinc-500 transition"
                       />
                       {field.helperText && (
-                        <p className="text-[10px] text-slate-500">{field.helperText}</p>
+                        <p className="text-[10px] text-zinc-500 font-mono">{field.helperText}</p>
                       )}
                     </div>
                   ))}
@@ -876,8 +851,8 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
               )}
 
               {/* Custom JSON Configuration */}
-              <div className="space-y-1.5">
-                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <div className="space-y-1">
+                <label className="block text-[10px] font-mono uppercase text-zinc-400">
                   Custom JSON Settings (Optional)
                 </label>
                 <textarea
@@ -885,40 +860,37 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                   value={formCustomConfigJson}
                   onChange={(e) => setFormCustomConfigJson(e.target.value)}
                   placeholder='{"channel": "general", "retryAttempts": 3}'
-                  className="w-full px-3.5 py-2 rounded-xl bg-slate-950 border border-slate-800 text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 font-mono leading-relaxed"
+                  className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white placeholder-zinc-600 focus:outline-none focus:border-zinc-500 font-mono leading-relaxed transition"
                 />
-                <p className="text-[11px] text-slate-500">
-                  Arbitrary JSON object passed to the plugin runner and exposed in public endpoints.
-                </p>
               </div>
 
               {/* Modal Footer */}
-              <div className="pt-4 border-t border-slate-800 flex items-center justify-between gap-3">
-                <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
+              <div className="pt-3 border-t border-zinc-800 flex items-center justify-between gap-3">
+                <label className="flex items-center gap-2 cursor-pointer text-xs text-zinc-400 font-mono">
                   <input
                     type="checkbox"
                     checked={formEnabled}
                     onChange={(e) => setFormEnabled(e.target.checked)}
-                    className="rounded border-slate-700 text-indigo-600 focus:ring-indigo-500"
+                    className="rounded border-zinc-700 text-black focus:ring-zinc-500"
                   />
-                  <span>Enable immediately upon saving</span>
+                  <span>Enable upon saving</span>
                 </label>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+                    className="px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono transition cursor-pointer"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSaving}
-                    className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md shadow-indigo-600/30 transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                    className="px-3.5 py-1.5 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-sm"
                   >
                     {isSaving && (
-                      <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
                     )}
                     <span>{editingPlugin ? "Save Changes" : "Create Plugin"}</span>
                   </button>
@@ -932,27 +904,27 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
       {/* Delete Confirmation Modal */}
       {pluginToDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-150">
-          <div className="w-full max-w-md rounded-2xl bg-slate-900 border border-slate-800 p-6 shadow-2xl text-slate-100">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/20">
-                <AlertTriangle className="w-5 h-5" />
+          <div className="w-full max-w-md rounded-lg bg-[#111113] border border-zinc-800 p-5 shadow-2xl text-zinc-100">
+            <div className="flex items-center gap-2.5 mb-3">
+              <div className="p-1.5 rounded-md bg-rose-500/10 text-rose-400 border border-rose-500/20">
+                <AlertTriangle className="w-4 h-4" />
               </div>
               <div>
-                <h3 className="text-base font-bold text-white">Delete Plugin</h3>
-                <span className="text-xs text-rose-400">Irreversible Action</span>
+                <h3 className="text-xs font-semibold text-white font-mono uppercase tracking-wider">Delete Plugin</h3>
+                <span className="text-[10px] text-rose-400 font-mono">Irreversible Action</span>
               </div>
             </div>
 
-            <p className="text-xs text-slate-300 leading-relaxed">
+            <p className="text-xs text-zinc-400 leading-relaxed font-normal">
               Are you sure you want to delete <strong className="text-white">{pluginToDelete.name}</strong>?
-              This will remove the plugin and its trigger subscriptions permanently from Sanity Content Lake.
+              This will remove the plugin and its trigger subscriptions from Sanity Content Lake.
             </p>
 
-            <div className="mt-6 flex items-center justify-end gap-3">
+            <div className="mt-5 flex items-center justify-end gap-2.5">
               <button
                 type="button"
                 onClick={() => setPluginToDelete(null)}
-                className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold transition"
+                className="px-3.5 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono transition cursor-pointer"
               >
                 Cancel
               </button>
@@ -960,10 +932,10 @@ export function PluginManager({ initialPlugins }: PluginManagerProps) {
                 type="button"
                 disabled={isDeleting}
                 onClick={handleConfirmDelete}
-                className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-md shadow-rose-600/30 transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
+                className="px-3.5 py-1.5 rounded-md bg-rose-600 hover:bg-rose-500 text-white text-xs font-semibold shadow-sm transition flex items-center gap-1.5 cursor-pointer disabled:opacity-50"
               >
                 {isDeleting && (
-                  <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  <span className="w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 )}
                 <span>Confirm Delete</span>
               </button>

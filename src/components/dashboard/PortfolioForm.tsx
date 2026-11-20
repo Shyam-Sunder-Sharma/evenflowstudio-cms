@@ -152,22 +152,22 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
   };
 
   return (
-    <div className="space-y-6 max-w-4xl">
+    <div className="space-y-6 max-w-5xl">
       {/* Top action bar */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+      <div className="flex items-center justify-between pb-4 border-b border-zinc-800/80">
         <Link
           href="/dashboard/portfolio"
-          className="inline-flex items-center gap-2 text-sm text-slate-400 hover:text-white transition"
+          className="inline-flex items-center gap-1.5 text-xs text-zinc-400 hover:text-white transition font-mono"
         >
-          <ArrowLeft className="w-4 h-4" />
+          <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Portfolio</span>
         </Link>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             disabled={isSubmitting}
             onClick={() => handleSubmit("draft")}
-            className="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition disabled:opacity-50 cursor-pointer"
+            className="px-3.5 py-2 rounded-md text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 border border-zinc-700 transition disabled:opacity-50 cursor-pointer"
           >
             Save Draft
           </button>
@@ -175,10 +175,10 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
             type="button"
             disabled={isSubmitting}
             onClick={() => handleSubmit("published")}
-            className="px-5 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white shadow-lg shadow-violet-600/30 transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+            className="px-4 py-2 rounded-md text-xs font-semibold bg-[#ccff00] hover:bg-[#b8e600] text-black transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer shadow-sm"
           >
             {isSubmitting && (
-              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <span className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
             )}
             <span>{isEditing ? "Update & Publish" : "Publish Project"}</span>
           </button>
@@ -186,50 +186,50 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
       </div>
 
       {error && (
-        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-start gap-3 text-rose-400 text-sm">
-          <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+        <div className="p-3.5 rounded-md bg-rose-500/10 border border-rose-500/20 flex items-start gap-2.5 text-rose-400 text-xs">
+          <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
           <div>{error}</div>
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Content Form */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Title */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-4">
+        <div className="lg:col-span-2 space-y-5">
+          {/* Title & Slugs */}
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Project Title <span className="text-rose-400">*</span>
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1.5 font-semibold">
+                Project Title <span className="text-[#ccff00]">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="e.g. Nordic Haven: Visual Identity & Packaging"
-                className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-white placeholder-slate-500 text-base font-medium focus:outline-none focus:ring-2 focus:ring-violet-500"
+                placeholder="e.g. Aethelgard Monolith: Architectural Spatial Identity"
+                className="w-full px-3.5 py-2.5 rounded-md bg-[#09090b] border border-zinc-800 text-white placeholder-zinc-600 text-sm font-medium focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             {/* Slugs (PL / EN) */}
-            <div className="pt-2 border-t border-slate-800/80 space-y-3">
+            <div className="pt-3 border-t border-zinc-800/80 space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-                  Bilingual URLs (Slugs)
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                  Bilingual Slugs
                 </span>
                 <button
                   type="button"
                   onClick={() => setAutoSlug(!autoSlug)}
-                  className="text-xs text-violet-400 hover:text-violet-300 font-medium cursor-pointer"
+                  className="text-[11px] font-mono text-zinc-400 hover:text-white transition cursor-pointer"
                 >
-                  {autoSlug ? "Disable auto-slug" : "Enable auto-slug"}
+                  {autoSlug ? "[ Auto-sync: ON ]" : "[ Auto-sync: OFF ]"}
                 </button>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                    Polish URL (/slugPl)
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                    Polish Slug (/slugPl)
                   </label>
                   <input
                     type="text"
@@ -238,13 +238,13 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                       setAutoSlug(false);
                       setSlugPl(e.target.value);
                     }}
-                    placeholder="nordic-haven-identyfikacja"
-                    className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-violet-300 font-mono focus:outline-none focus:ring-2 focus:ring-violet-500"
+                    placeholder="aethelgard-monolith-identyfikacja"
+                    className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                    English URL (/slugEn)
+                  <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                    English Slug (/slugEn)
                   </label>
                   <input
                     type="text"
@@ -253,8 +253,8 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                       setAutoSlug(false);
                       setSlugEn(e.target.value);
                     }}
-                    placeholder="nordic-haven-branding"
-                    className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-indigo-300 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    placeholder="aethelgard-monolith-spatial-identity"
+                    className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
                   />
                 </div>
               </div>
@@ -262,73 +262,73 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
           </div>
 
           {/* Project Details (Client, URL) */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Client / Brand Name
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1.5 font-semibold">
+                Client / Brand Partner
               </label>
               <div className="relative">
-                <Building className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Building className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
                 <input
                   type="text"
                   value={client}
                   onChange={(e) => setClient(e.target.value)}
-                  placeholder="e.g. Nordic Haven Studio"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="e.g. Studio Aethelgard & Partners"
+                  className="w-full pl-9 pr-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition font-mono"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-                Live Project URL
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1.5 font-semibold">
+                Live URL
               </label>
               <div className="relative">
-                <Globe className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Globe className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
                 <input
                   type="url"
                   value={projectUrl}
                   onChange={(e) => setProjectUrl(e.target.value)}
-                  placeholder="https://nordichaven.example.com"
-                  className="w-full pl-10 pr-3 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                  placeholder="https://aethelgard.evenflowstudio.com"
+                  className="w-full pl-9 pr-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 transition font-mono"
                 />
               </div>
             </div>
           </div>
 
           {/* Description */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg">
             <div className="flex items-center justify-between mb-2">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Project Case Study / Description
+              <label className="block text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold">
+                Case Study Narrative (Portable Text)
               </label>
-              <span className="text-[11px] text-slate-500">
-                Portable Text (Markdown/Plain)
+              <span className="text-[10px] text-zinc-400 font-mono">
+                Markdown mapped to Sanity block schema
               </span>
             </div>
             <textarea
               rows={10}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the challenge, creative solution, brand typography, and design outcomes..."
-              className="w-full px-4 py-3 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-violet-500 leading-relaxed font-mono"
+              placeholder="Outline project scope, creative direction, material specifications, and design outcomes..."
+              className="w-full px-3.5 py-3 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-500 leading-relaxed font-mono transition"
             />
           </div>
 
           {/* Multi-Image Gallery */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-4">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-3">
             <div className="flex items-center justify-between">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
-                  Project Gallery (Multi-Image)
+                <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
+                  Project Gallery Assets
                 </span>
-                <span className="text-xs text-slate-500">
-                  Upload multiple portfolio showcase photos & mockups
+                <span className="text-[10px] text-zinc-400 font-mono">
+                  Multi-image showcase photos, interior photography, and render stills
                 </span>
               </div>
-              <label className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold border border-slate-700 cursor-pointer transition inline-flex items-center gap-1.5">
-                <Upload className="w-3.5 h-3.5" />
-                <span>Add Images</span>
+              <label className="px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-mono border border-zinc-700 cursor-pointer transition inline-flex items-center gap-1.5">
+                <Upload className="w-3 h-3" />
+                <span>Add Assets</span>
                 <input
                   type="file"
                   multiple
@@ -340,12 +340,12 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
             </div>
 
             {/* Gallery Previews Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
               {/* Existing gallery */}
               {existingGallery.map((item, idx) => (
                 <div
                   key={item._key || idx}
-                  className="relative aspect-square rounded-xl overflow-hidden border border-slate-800 bg-slate-950 group"
+                  className="relative aspect-square rounded-md overflow-hidden border border-zinc-800 bg-zinc-950 group"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -353,7 +353,7 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                     alt={item.alt || "Gallery item"}
                     className="w-full h-full object-cover"
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[10px] text-white">
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex items-center justify-center text-[10px] text-zinc-300 font-mono">
                     Existing
                   </div>
                 </div>
@@ -363,7 +363,7 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
               {galleryPreviews.map((url, idx) => (
                 <div
                   key={idx}
-                  className="relative aspect-square rounded-xl overflow-hidden border border-violet-500/40 bg-slate-950 group"
+                  className="relative aspect-square rounded-md overflow-hidden border border-zinc-700 bg-zinc-950 group"
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -374,11 +374,11 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                   <button
                     type="button"
                     onClick={() => removeNewGalleryItem(idx)}
-                    className="absolute top-1 right-1 p-1 rounded-full bg-rose-600 text-white shadow-md hover:bg-rose-500 transition"
+                    className="absolute top-1 right-1 p-1 rounded-full bg-rose-600/90 text-white shadow-sm hover:bg-rose-500 transition cursor-pointer"
                   >
-                    <X className="w-3 h-3" />
+                    <X className="w-2.5 h-2.5" />
                   </button>
-                  <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-violet-600/80 text-[9px] text-white font-medium">
+                  <span className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-zinc-900/90 border border-zinc-700 text-[9px] text-[#ccff00] font-mono">
                     New
                   </span>
                 </div>
@@ -388,16 +388,16 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
         </div>
 
         {/* Sidebar Settings */}
-        <div className="space-y-6">
-          {/* Featured Image */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+        <div className="space-y-5">
+          {/* Featured Hero Cover */}
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-3">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
               Featured Hero Cover
             </span>
 
             {featuredPreview ? (
-              <div className="space-y-3">
-                <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-800 bg-slate-950">
+              <div className="space-y-2.5">
+                <div className="relative aspect-video rounded-md overflow-hidden border border-zinc-800 bg-zinc-950">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={featuredPreview}
@@ -405,8 +405,8 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <label className="block text-center py-2 px-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium cursor-pointer transition">
-                  Replace Hero Image
+                <label className="block text-center py-1.5 px-3 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono cursor-pointer transition">
+                  Replace Hero Cover
                   <input
                     type="file"
                     accept="image/*"
@@ -416,15 +416,15 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
                 </label>
               </div>
             ) : (
-              <label className="border-2 border-dashed border-slate-800 hover:border-violet-500/50 rounded-xl p-6 flex flex-col items-center justify-center cursor-pointer transition text-center group bg-slate-950/40">
-                <div className="p-3 rounded-xl bg-slate-800 text-slate-400 group-hover:text-violet-400 transition mb-2">
-                  <Upload className="w-5 h-5" />
+              <label className="border border-dashed border-zinc-700 hover:border-zinc-500 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer transition text-center bg-zinc-950/40">
+                <div className="p-2.5 rounded-md bg-zinc-900 border border-zinc-800 text-zinc-400 mb-2">
+                  <Upload className="w-4 h-4" />
                 </div>
-                <span className="text-xs font-medium text-slate-300">
-                  Upload project hero banner
+                <span className="text-xs font-medium text-zinc-300">
+                  Upload hero cover
                 </span>
-                <span className="text-[11px] text-slate-500 mt-1">
-                  PNG, JPG, WEBP
+                <span className="text-[10px] text-zinc-400 font-mono mt-0.5">
+                  WEBP, JPG, PNG up to 15MB
                 </span>
                 <input
                   type="file"
@@ -436,63 +436,63 @@ export function PortfolioForm({ initialData, categories }: PortfolioFormProps) {
             )}
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Image Alt Text
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Cover Alt Text
               </label>
               <input
                 type="text"
                 value={featuredAlt}
                 onChange={(e) => setFeaturedAlt(e.target.value)}
-                placeholder="Accessible description of image"
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                placeholder="Architectural view description"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
           </div>
 
           {/* Category Dropdown */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-2.5">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
               Portfolio Category
             </span>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full px-3 py-2.5 rounded-xl bg-slate-950/80 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500 cursor-pointer"
+              className="w-full px-3 py-2 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
             >
-              <option value="">Select a category...</option>
+              <option value="" className="bg-[#111113]">Select a category...</option>
               {categories.map((c) => (
-                <option key={c._id} value={c._id} className="bg-slate-900">
+                <option key={c._id} value={c._id} className="bg-[#111113]">
                   {c.title}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Publishing Info */}
-          <div className="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm space-y-3">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
-              Project Meta
+          {/* Publishing Metadata */}
+          <div className="bg-[#111113] border border-zinc-800/80 p-5 rounded-lg space-y-3">
+            <span className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 font-semibold block">
+              Project Metadata
             </span>
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Author
               </label>
               <input
                 type="text"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono transition"
               />
             </div>
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Release / Published Date
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Release Date
               </label>
               <input
                 type="datetime-local"
                 value={publishedAt}
                 onChange={(e) => setPublishedAt(e.target.value)}
-                className="w-full px-3 py-2 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-200 focus:outline-none focus:ring-2 focus:ring-violet-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 focus:outline-none focus:border-zinc-500 font-mono transition"
               />
             </div>
           </div>

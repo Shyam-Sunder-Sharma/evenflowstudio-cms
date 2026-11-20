@@ -75,7 +75,6 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
       setCreateError(result.error);
       setCreateLoading(false);
     } else {
-      // Re-fetch or add optimistically
       const newCat: CategoryItem = {
         _id: `temp_${Date.now()}`,
         title: newTitle,
@@ -145,37 +144,37 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {/* Top action bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
         {/* Filter tabs */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-900 border border-slate-800 rounded-xl self-start">
+        <div className="flex items-center gap-1 p-1 bg-[#111113] border border-zinc-800/80 rounded-md self-start">
           <button
             onClick={() => setActiveTab("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            className={`px-3 py-1 rounded text-xs font-mono transition cursor-pointer ${
               activeTab === "all"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "text-slate-400 hover:text-white"
+                ? "bg-zinc-800 text-white font-medium"
+                : "text-zinc-400 hover:text-white"
             }`}
           >
-            All Categories ({categories.length})
+            All ({categories.length})
           </button>
           <button
             onClick={() => setActiveTab("blog")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            className={`px-3 py-1 rounded text-xs font-mono transition cursor-pointer ${
               activeTab === "blog"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "text-slate-400 hover:text-white"
+                ? "bg-zinc-800 text-white font-medium"
+                : "text-zinc-400 hover:text-white"
             }`}
           >
             Blog ({categories.filter((c) => c.section === "blog").length})
           </button>
           <button
             onClick={() => setActiveTab("portfolio")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            className={`px-3 py-1 rounded text-xs font-mono transition cursor-pointer ${
               activeTab === "portfolio"
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "text-slate-400 hover:text-white"
+                ? "bg-zinc-800 text-white font-medium"
+                : "text-zinc-400 hover:text-white"
             }`}
           >
             Portfolio ({categories.filter((c) => c.section === "portfolio").length})
@@ -187,9 +186,9 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
             setIsCreating(!isCreating);
             setEditingCategory(null);
           }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md shadow-emerald-600/20 transition self-start sm:self-auto cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold transition self-start sm:self-auto cursor-pointer"
         >
-          {isCreating ? <X className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+          {isCreating ? <X className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
           <span>{isCreating ? "Cancel" : "Add Category"}</span>
         </button>
       </div>
@@ -198,80 +197,80 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
       {isCreating && (
         <form
           onSubmit={handleCreate}
-          className="bg-slate-900/80 border border-emerald-500/30 p-5 rounded-2xl backdrop-blur-sm space-y-4 animate-in fade-in"
+          className="bg-[#111113] border border-zinc-700 p-5 rounded-lg space-y-4 animate-in fade-in"
         >
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <FolderTree className="w-4 h-4 text-emerald-400" />
-              <span>Create New Taxonomy Category</span>
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <h3 className="text-xs font-semibold text-white flex items-center gap-2 font-mono uppercase tracking-wider">
+              <FolderTree className="w-3.5 h-3.5 text-[#ccff00]" />
+              <span>Create Taxonomy Category</span>
             </h3>
             <button
               type="button"
               onClick={() => setIsCreating(false)}
-              className="text-slate-400 hover:text-white text-xs"
+              className="text-zinc-500 hover:text-white text-xs font-mono"
             >
               Cancel
             </button>
           </div>
 
           {createError && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="p-2.5 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{createError}</span>
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Category Title <span className="text-rose-400">*</span>
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Category Title <span className="text-[#ccff00]">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={newTitle}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                placeholder="e.g. Branding & Identity"
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                placeholder="e.g. Spatial Systems"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Slug (URL Identifier)
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Slug
               </label>
               <input
                 type="text"
                 value={newSlug}
                 onChange={(e) => setNewSlug(e.target.value)}
-                placeholder="branding-identity"
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-emerald-400 font-mono focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                placeholder="spatial-systems"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Section
               </label>
               <select
                 value={newSection}
                 onChange={(e) => setNewSection(e.target.value as "blog" | "portfolio")}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
               >
-                <option value="blog">Blog</option>
-                <option value="portfolio">Portfolio</option>
+                <option value="blog" className="bg-[#111113]">Blog</option>
+                <option value="portfolio" className="bg-[#111113]">Portfolio</option>
               </select>
             </div>
           </div>
 
-          <div className="flex justify-end pt-2">
+          <div className="flex justify-end pt-1">
             <button
               type="submit"
               disabled={createLoading}
-              className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold shadow-md transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
               {createLoading && (
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
               )}
               <span>Save Category</span>
             </button>
@@ -279,89 +278,89 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
         </form>
       )}
 
-      {/* Edit Category Modal/Card */}
+      {/* Edit Category Form */}
       {editingCategory && (
         <form
           onSubmit={handleUpdate}
-          className="bg-slate-900/80 border border-indigo-500/30 p-5 rounded-2xl backdrop-blur-sm space-y-4 animate-in fade-in"
+          className="bg-[#111113] border border-zinc-700 p-5 rounded-lg space-y-4 animate-in fade-in"
         >
-          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
-            <h3 className="text-sm font-semibold text-white flex items-center gap-2">
-              <Edit3 className="w-4 h-4 text-indigo-400" />
+          <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+            <h3 className="text-xs font-semibold text-white flex items-center gap-2 font-mono uppercase tracking-wider">
+              <Edit3 className="w-3.5 h-3.5 text-[#ccff00]" />
               <span>Edit Category: {editingCategory.title}</span>
             </h3>
             <button
               type="button"
               onClick={() => setEditingCategory(null)}
-              className="text-slate-400 hover:text-white text-xs"
+              className="text-zinc-500 hover:text-white text-xs font-mono"
             >
               Cancel
             </button>
           </div>
 
           {editError && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 shrink-0" />
+            <div className="p-2.5 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs flex items-center gap-2">
+              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
               <span>{editError}</span>
             </div>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
-                Category Title <span className="text-rose-400">*</span>
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
+                Category Title <span className="text-[#ccff00]">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-white focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Slug
               </label>
               <input
                 type="text"
                 value={editSlug}
                 onChange={(e) => setEditSlug(e.target.value)}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-indigo-400 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 transition"
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-medium text-slate-400 mb-1">
+              <label className="block text-[10px] font-mono uppercase text-zinc-400 mb-1">
                 Section
               </label>
               <select
                 value={editSection}
                 onChange={(e) => setEditSection(e.target.value as "blog" | "portfolio")}
-                className="w-full px-3 py-2 rounded-xl bg-slate-950 border border-slate-800 text-sm text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 cursor-pointer"
+                className="w-full px-3 py-1.5 rounded-md bg-[#09090b] border border-zinc-800 text-xs text-zinc-200 font-mono focus:outline-none focus:border-zinc-500 cursor-pointer"
               >
-                <option value="blog">Blog</option>
-                <option value="portfolio">Portfolio</option>
+                <option value="blog" className="bg-[#111113]">Blog</option>
+                <option value="portfolio" className="bg-[#111113]">Portfolio</option>
               </select>
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 pt-2">
+          <div className="flex justify-end gap-2.5 pt-1">
             <button
               type="button"
               onClick={() => setEditingCategory(null)}
-              className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium"
+              className="px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs font-mono"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={editLoading}
-              className="px-4 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md transition disabled:opacity-50 flex items-center gap-2 cursor-pointer"
+              className="px-3.5 py-1.5 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold transition disabled:opacity-50 flex items-center gap-1.5 cursor-pointer shadow-sm"
             >
               {editLoading && (
-                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="w-3 h-3 border-2 border-black/30 border-t-black rounded-full animate-spin" />
               )}
               <span>Update Category</span>
             </button>
@@ -370,20 +369,20 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
       )}
 
       {/* Categories Table */}
-      <div className="rounded-2xl border border-slate-800 bg-slate-900/60 overflow-hidden backdrop-blur-sm shadow-xl">
-        <table className="w-full text-left text-sm text-slate-300">
-          <thead className="bg-slate-950/60 border-b border-slate-800 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+      <div className="rounded-lg border border-zinc-800/80 bg-[#111113] overflow-hidden">
+        <table className="w-full text-left text-xs text-zinc-300">
+          <thead className="bg-[#0d0d0f] border-b border-zinc-800 text-[10px] font-mono font-semibold uppercase tracking-wider text-zinc-400">
             <tr>
-              <th className="py-3.5 px-4">Category</th>
-              <th className="py-3.5 px-4">Slug</th>
-              <th className="py-3.5 px-4">Section</th>
-              <th className="py-3.5 px-4 text-right">Actions</th>
+              <th className="py-3 px-4">Category</th>
+              <th className="py-3 px-4">Slug</th>
+              <th className="py-3 px-4">Section</th>
+              <th className="py-3 px-4 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
+          <tbody className="divide-y divide-zinc-800/60">
             {filteredCategories.length === 0 ? (
               <tr>
-                <td colSpan={4} className="py-10 text-center text-slate-500">
+                <td colSpan={4} className="py-10 text-center text-zinc-500 font-mono text-xs">
                   No categories found. Click "Add Category" to create one.
                 </td>
               </tr>
@@ -391,46 +390,38 @@ export function CategoryManager({ initialCategories }: CategoryManagerProps) {
               filteredCategories.map((cat) => (
                 <tr
                   key={cat._id}
-                  className="hover:bg-slate-800/30 transition duration-150"
+                  className="hover:bg-zinc-900/40 transition duration-100"
                 >
-                  <td className="py-3 px-4 font-medium text-white flex items-center gap-2.5">
-                    <div className="p-1.5 rounded-lg bg-slate-800 text-slate-400">
-                      <Tag className="w-3.5 h-3.5" />
-                    </div>
+                  <td className="py-2.5 px-4 font-medium text-white flex items-center gap-2">
+                    <Tag className="w-3 h-3 text-zinc-500" />
                     <span>{cat.title}</span>
                   </td>
-                  <td className="py-3 px-4 text-xs font-mono text-indigo-400">
+                  <td className="py-2.5 px-4 text-xs font-mono text-zinc-400">
                     /{cat.slug?.current || "-"}
                   </td>
-                  <td className="py-3 px-4">
-                    <span
-                      className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider ${
-                        cat.section === "blog"
-                          ? "bg-indigo-500/15 text-indigo-400 border border-indigo-500/20"
-                          : "bg-violet-500/15 text-violet-400 border border-violet-500/20"
-                      }`}
-                    >
+                  <td className="py-2.5 px-4">
+                    <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-zinc-900 border border-zinc-800 text-zinc-300">
                       {cat.section}
                     </span>
                   </td>
-                  <td className="py-3 px-4 text-right">
-                    <div className="flex items-center justify-end gap-2">
+                  <td className="py-2.5 px-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => startEdit(cat)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-indigo-400 hover:bg-slate-800 transition cursor-pointer"
+                        className="p-1 rounded text-zinc-400 hover:text-white hover:bg-zinc-800 transition cursor-pointer"
                         title="Edit Category"
                       >
-                        <Edit3 className="w-4 h-4" />
+                        <Edit3 className="w-3.5 h-3.5" />
                       </button>
                       <button
                         onClick={() => {
                           setCatToDelete(cat);
                           setDeleteModalOpen(true);
                         }}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
+                        className="p-1 rounded text-zinc-500 hover:text-rose-400 hover:bg-rose-500/10 transition cursor-pointer"
                         title="Delete Category"
                       >
-                        <Trash2 className="w-4 h-4" />
+                        <Trash2 className="w-3.5 h-3.5" />
                       </button>
                     </div>
                   </td>

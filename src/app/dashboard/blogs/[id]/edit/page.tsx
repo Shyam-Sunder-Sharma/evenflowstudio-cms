@@ -4,7 +4,6 @@ import { getBlogPostById } from "@/actions/blogActions";
 import { getCategories } from "@/actions/categoryActions";
 import { BlogForm } from "@/components/dashboard/BlogForm";
 
-
 export default async function EditBlogPostPage({
   params,
 }: {
@@ -22,12 +21,12 @@ export default async function EditBlogPostPage({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
-          Edit Blog Post
+      <div className="pb-2 border-b border-zinc-800/60">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+          Edit Editorial Article
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Update content, bilingual URLs, categories, or status.
+        <p className="text-xs text-zinc-400 mt-1">
+          Update article content, bilingual slugs, taxonomy, and publication status.
         </p>
       </div>
 

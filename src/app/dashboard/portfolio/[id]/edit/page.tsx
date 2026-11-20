@@ -4,7 +4,6 @@ import { getPortfolioProjectById } from "@/actions/portfolioActions";
 import { getCategories } from "@/actions/categoryActions";
 import { PortfolioForm } from "@/components/dashboard/PortfolioForm";
 
-
 export default async function EditPortfolioProjectPage({
   params,
 }: {
@@ -22,12 +21,12 @@ export default async function EditPortfolioProjectPage({
 
   return (
     <div className="space-y-6 animate-in fade-in duration-200">
-      <div>
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+      <div className="pb-2 border-b border-zinc-800/60">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
           Edit Portfolio Project
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
-          Update project details, gallery assets, client information, and publication status.
+        <p className="text-xs text-zinc-400 mt-1">
+          Update case study assets, client information, bilingual slugs, and publication status.
         </p>
       </div>
 

@@ -8,9 +8,8 @@ import {
   Plus,
   ArrowUpRight,
   Clock,
-  Sparkles,
+  Radio,
 } from "lucide-react";
-
 
 interface OverviewStats {
   totalBlogs: number;
@@ -20,6 +19,7 @@ interface OverviewStats {
   publishedPortfolio: number;
   draftPortfolio: number;
   totalCategories: number;
+  totalPlugins: number;
 }
 
 async function getStats(): Promise<OverviewStats> {
@@ -32,6 +32,7 @@ async function getStats(): Promise<OverviewStats> {
       publishedPortfolio,
       draftPortfolio,
       totalCategories,
+      totalPlugins,
     ] = await Promise.all([
       client.fetch<number>(`count(*[_type == "blogPost"])`, {}, { cache: "no-store" }),
       client.fetch<number>(`count(*[_type == "blogPost" && status == "published"])`, {}, { cache: "no-store" }),
@@ -40,6 +41,7 @@ async function getStats(): Promise<OverviewStats> {
       client.fetch<number>(`count(*[_type == "portfolioProject" && status == "published"])`, {}, { cache: "no-store" }),
       client.fetch<number>(`count(*[_type == "portfolioProject" && status == "draft"])`, {}, { cache: "no-store" }),
       client.fetch<number>(`count(*[_type == "category"])`, {}, { cache: "no-store" }),
+      client.fetch<number>(`count(*[_type == "cmsPlugin"])`, {}, { cache: "no-store" }),
     ]);
 
     return {
@@ -50,6 +52,7 @@ async function getStats(): Promise<OverviewStats> {
       publishedPortfolio: publishedPortfolio || 0,
       draftPortfolio: draftPortfolio || 0,
       totalCategories: totalCategories || 0,
+      totalPlugins: totalPlugins || 0,
     };
   } catch (e) {
     console.error("Error fetching overview stats:", e);
@@ -61,6 +64,7 @@ async function getStats(): Promise<OverviewStats> {
       publishedPortfolio: 0,
       draftPortfolio: 0,
       totalCategories: 0,
+      totalPlugins: 0,
     };
   }
 }
@@ -71,6 +75,8 @@ async function getRecentItems() {
       "blogs": *[_type == "blogPost"] | order(_createdAt desc)[0...5] {
         _id,
         title,
+        slugEn,
+        slugPl,
         status,
         publishedAt,
         _createdAt
@@ -78,6 +84,8 @@ async function getRecentItems() {
       "projects": *[_type == "portfolioProject"] | order(_createdAt desc)[0...5] {
         _id,
         title,
+        slugEn,
+        slugPl,
         status,
         client,
         _createdAt
@@ -95,66 +103,64 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-8 animate-in fade-in duration-200">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      {/* Editorial Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-2 border-b border-zinc-800/60">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
-            Editorial Overview
-            <span className="text-xs px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 font-medium">
-              Headless
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-white">
+              Editorial Overview
+            </h1>
+            <span className="font-mono text-[10px] uppercase px-2 py-0.5 rounded bg-zinc-800 text-zinc-300 border border-zinc-700/80">
+              Live Lake
             </span>
-          </h1>
-          <p className="text-sm text-slate-400 mt-1">
-            Evenflowstudio Content Management System & API Hub
+          </div>
+          <p className="text-xs text-zinc-400 mt-1">
+            Evenflowstudio Content Management System & Headless API Hub
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <Link
             href="/dashboard/blogs/new"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold shadow-lg shadow-indigo-600/25 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md bg-[#ccff00] hover:bg-[#b8e600] text-black text-xs font-semibold shadow-sm transition"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>New Blog Post</span>
           </Link>
           <Link
             href="/dashboard/portfolio/new"
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-700 transition"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-xs font-medium border border-zinc-700 transition"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5" />
             <span>New Project</span>
           </Link>
         </div>
       </div>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Stats Cards - Architectural Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Blogs Card */}
-        <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-sm relative overflow-hidden group hover:border-slate-700 transition">
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5 hover:border-zinc-700 transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
               Blog Articles
             </span>
-            <div className="p-2.5 rounded-xl bg-indigo-500/10 text-indigo-400">
-              <FileText className="w-5 h-5" />
-            </div>
+            <FileText className="w-4 h-4 text-zinc-500" />
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white">
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-semibold text-white tracking-tight font-mono">
               {stats.totalBlogs}
             </span>
-            <span className="text-xs text-slate-400">total posts</span>
+            <span className="text-xs text-zinc-400">total</span>
           </div>
-          <div className="mt-4 flex items-center gap-3 pt-3 border-t border-slate-800/80 text-xs">
-            <span className="text-emerald-400 font-medium">
-              {stats.publishedBlogs} Published
-            </span>
-            <span className="text-slate-600">•</span>
-            <span className="text-amber-400 font-medium">
-              {stats.draftBlogs} Drafts
-            </span>
+          <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/80 text-xs">
+            <div className="flex items-center gap-2 text-[11px] font-mono">
+              <span className="text-emerald-400">{stats.publishedBlogs} pub</span>
+              <span className="text-zinc-600">/</span>
+              <span className="text-zinc-400">{stats.draftBlogs} draft</span>
+            </div>
             <Link
               href="/dashboard/blogs"
-              className="ml-auto text-indigo-400 hover:text-indigo-300 flex items-center gap-1"
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-0.5 transition"
             >
               Manage <ArrowUpRight className="w-3 h-3" />
             </Link>
@@ -162,32 +168,28 @@ export default async function DashboardPage() {
         </div>
 
         {/* Portfolio Card */}
-        <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-sm relative overflow-hidden group hover:border-slate-700 transition">
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5 hover:border-zinc-700 transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
               Portfolio Projects
             </span>
-            <div className="p-2.5 rounded-xl bg-violet-500/10 text-violet-400">
-              <Briefcase className="w-5 h-5" />
-            </div>
+            <Briefcase className="w-4 h-4 text-zinc-500" />
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white">
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-semibold text-white tracking-tight font-mono">
               {stats.totalPortfolio}
             </span>
-            <span className="text-xs text-slate-400">total projects</span>
+            <span className="text-xs text-zinc-400">total</span>
           </div>
-          <div className="mt-4 flex items-center gap-3 pt-3 border-t border-slate-800/80 text-xs">
-            <span className="text-emerald-400 font-medium">
-              {stats.publishedPortfolio} Published
-            </span>
-            <span className="text-slate-600">•</span>
-            <span className="text-amber-400 font-medium">
-              {stats.draftPortfolio} Drafts
-            </span>
+          <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/80 text-xs">
+            <div className="flex items-center gap-2 text-[11px] font-mono">
+              <span className="text-emerald-400">{stats.publishedPortfolio} pub</span>
+              <span className="text-zinc-600">/</span>
+              <span className="text-zinc-400">{stats.draftPortfolio} draft</span>
+            </div>
             <Link
               href="/dashboard/portfolio"
-              className="ml-auto text-violet-400 hover:text-violet-300 flex items-center gap-1"
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-0.5 transition"
             >
               Manage <ArrowUpRight className="w-3 h-3" />
             </Link>
@@ -195,26 +197,49 @@ export default async function DashboardPage() {
         </div>
 
         {/* Categories Card */}
-        <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-sm relative overflow-hidden group hover:border-slate-700 transition">
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5 hover:border-zinc-700 transition">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
-              Taxonomy Categories
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+              Categories
             </span>
-            <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400">
-              <FolderTree className="w-5 h-5" />
-            </div>
+            <FolderTree className="w-4 h-4 text-zinc-500" />
           </div>
-          <div className="mt-4 flex items-baseline gap-2">
-            <span className="text-3xl font-extrabold text-white">
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-semibold text-white tracking-tight font-mono">
               {stats.totalCategories}
             </span>
-            <span className="text-xs text-slate-400">active categories</span>
+            <span className="text-xs text-zinc-400">taxonomies</span>
           </div>
-          <div className="mt-4 flex items-center justify-between pt-3 border-t border-slate-800/80 text-xs">
-            <span className="text-slate-400">Blog & Portfolio Sections</span>
+          <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/80 text-xs">
+            <span className="text-[11px] text-zinc-400 font-mono">Blog & Portfolio</span>
             <Link
               href="/dashboard/categories"
-              className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1"
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-0.5 transition"
+            >
+              Manage <ArrowUpRight className="w-3 h-3" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Plugins & Webhooks Card */}
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5 hover:border-zinc-700 transition">
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-zinc-400 font-mono">
+              Integrations
+            </span>
+            <Radio className="w-4 h-4 text-zinc-500" />
+          </div>
+          <div className="mt-3 flex items-baseline gap-2">
+            <span className="text-3xl font-semibold text-white tracking-tight font-mono">
+              {stats.totalPlugins}
+            </span>
+            <span className="text-xs text-zinc-400">configured</span>
+          </div>
+          <div className="mt-4 flex items-center justify-between pt-3 border-t border-zinc-800/80 text-xs">
+            <span className="text-[11px] text-zinc-400 font-mono">Webhooks & Scripts</span>
+            <Link
+              href="/dashboard/plugins"
+              className="text-xs text-zinc-400 hover:text-white flex items-center gap-0.5 transition"
             >
               Manage <ArrowUpRight className="w-3 h-3" />
             </Link>
@@ -225,44 +250,48 @@ export default async function DashboardPage() {
       {/* Recent Items Tables */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Recent Blogs */}
-        <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-sm">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5">
+          <div className="flex items-center justify-between pb-3.5 border-b border-zinc-800/80">
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-indigo-400" />
-              <h2 className="font-semibold text-white text-base">Recent Blog Posts</h2>
+              <FileText className="w-4 h-4 text-zinc-400" />
+              <h2 className="font-semibold text-white text-sm">Recent Blog Posts</h2>
             </div>
             <Link
               href="/dashboard/blogs"
-              className="text-xs text-indigo-400 hover:text-indigo-300 font-medium"
+              className="text-xs text-zinc-400 hover:text-white font-mono flex items-center gap-1 transition"
             >
-              View All
+              View All <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="mt-4 divide-y divide-slate-800/60">
+          <div className="mt-3 divide-y divide-zinc-800/60">
             {recent.blogs.length === 0 ? (
-              <p className="py-6 text-sm text-center text-slate-500">
-                No blog posts found. Click "New Blog Post" to create one.
+              <p className="py-6 text-xs text-center text-zinc-500 font-mono">
+                No blog posts found. Click "New Blog Post" to publish.
               </p>
             ) : (
               recent.blogs.map((b) => (
-                <div key={b._id} className="py-3 flex items-center justify-between gap-4">
-                  <div className="min-w-0">
+                <div key={b._id} className="py-3 flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <Link
                       href={`/dashboard/blogs/${b._id}/edit`}
-                      className="text-sm font-medium text-slate-200 hover:text-indigo-400 truncate block transition"
+                      className="text-xs font-medium text-zinc-200 hover:text-white truncate block transition"
                     >
                       {b.title}
                     </Link>
-                    <span className="text-xs text-slate-500 flex items-center gap-1 mt-0.5">
-                      <Clock className="w-3 h-3" />
-                      {new Date(b.publishedAt || b._createdAt).toLocaleDateString()}
-                    </span>
+                    <div className="flex items-center gap-2 text-[11px] text-zinc-400 font-mono mt-1">
+                      <span className="truncate">/{b.slugPl?.current || b.slugEn?.current || "-"}</span>
+                      <span className="text-zinc-600">•</span>
+                      <span className="flex items-center gap-1 shrink-0">
+                        <Clock className="w-2.5 h-2.5 text-zinc-400" />
+                        {new Date(b.publishedAt || b._createdAt).toLocaleDateString()}
+                      </span>
+                    </div>
                   </div>
                   <span
-                    className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
+                    className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded shrink-0 ${
                       b.status === "published"
-                        ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
-                        : "bg-amber-500/15 text-amber-400 border border-amber-500/20"
+                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                        : "bg-zinc-800 text-zinc-400 border border-zinc-700"
                     }`}
                   >
                     {b.status}
@@ -274,43 +303,45 @@ export default async function DashboardPage() {
         </div>
 
         {/* Recent Portfolio Projects */}
-        <div className="rounded-2xl bg-slate-900/60 border border-slate-800 p-6 backdrop-blur-sm">
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div className="rounded-lg bg-[#111113] border border-zinc-800/80 p-5">
+          <div className="flex items-center justify-between pb-3.5 border-b border-zinc-800/80">
             <div className="flex items-center gap-2">
-              <Briefcase className="w-4 h-4 text-violet-400" />
-              <h2 className="font-semibold text-white text-base">Recent Projects</h2>
+              <Briefcase className="w-4 h-4 text-zinc-400" />
+              <h2 className="font-semibold text-white text-sm">Recent Projects</h2>
             </div>
             <Link
               href="/dashboard/portfolio"
-              className="text-xs text-violet-400 hover:text-violet-300 font-medium"
+              className="text-xs text-zinc-400 hover:text-white font-mono flex items-center gap-1 transition"
             >
-              View All
+              View All <ArrowUpRight className="w-3 h-3" />
             </Link>
           </div>
-          <div className="mt-4 divide-y divide-slate-800/60">
+          <div className="mt-3 divide-y divide-zinc-800/60">
             {recent.projects.length === 0 ? (
-              <p className="py-6 text-sm text-center text-slate-500">
+              <p className="py-6 text-xs text-center text-zinc-500 font-mono">
                 No portfolio projects found. Click "New Project" to create one.
               </p>
             ) : (
               recent.projects.map((p) => (
-                <div key={p._id} className="py-3 flex items-center justify-between gap-4">
-                  <div className="min-w-0">
+                <div key={p._id} className="py-3 flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
                     <Link
                       href={`/dashboard/portfolio/${p._id}/edit`}
-                      className="text-sm font-medium text-slate-200 hover:text-violet-400 truncate block transition"
+                      className="text-xs font-medium text-zinc-200 hover:text-white truncate block transition"
                     >
                       {p.title}
                     </Link>
-                    <span className="text-xs text-slate-500 block truncate mt-0.5">
-                      {p.client ? `Client: ${p.client}` : "Evenflowstudio Showcase"}
-                    </span>
+                    <div className="flex items-center gap-2 text-[11px] text-zinc-400 font-mono mt-1">
+                      <span className="truncate">{p.client ? `Client: ${p.client}` : "Evenflowstudio"}</span>
+                      <span className="text-zinc-600">•</span>
+                      <span className="truncate">/{p.slugPl?.current || p.slugEn?.current || "-"}</span>
+                    </div>
                   </div>
                   <span
-                    className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 ${
+                    className={`text-[10px] font-mono uppercase px-2 py-0.5 rounded shrink-0 ${
                       p.status === "published"
-                        ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/20"
-                        : "bg-amber-500/15 text-amber-400 border border-amber-500/20"
+                        ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                        : "bg-zinc-800 text-zinc-400 border border-zinc-700"
                     }`}
                   >
                     {p.status}
